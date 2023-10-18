@@ -5,10 +5,8 @@ import entity.Vehicle;
 
 import java.util.ArrayList;
 
-public interface VehicleLocationDataAccessInterface {
+public interface VehicleDataAccessInterface {
 
     public ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag);
-
-    public ArrayList<Route> getRoutesByStopTag(String tag);
 
 }

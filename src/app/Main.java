@@ -1,30 +1,17 @@
 package app;
 
-import data_access.VehicleLocationDAO;
-import data_access.VehicleLocationDataAccessInterface;
-import entity.Route;
-import entity.Vehicle;
-
-import java.util.ArrayList;
+import data_access.InvalidRequestException;
+import data_access.UmoiqApiCaller;
+import data_access.VehicleDAO;
+import data_access.VehicleDataAccessInterface;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidRequestException {
 
-        VehicleLocationDataAccessInterface dao = new VehicleLocationDAO();
+        VehicleDataAccessInterface dao = new VehicleDAO();
 
-//        ArrayList<Route> routes = dao.getRoutesByStop(1);
-//        ArrayList<Integer> routes = ((VehicleLocationDAO) dao).getRouteList();
-//        ((VehicleLocationDAO) dao).getStopTagsByRouteId(routes.get(0));
-
-        ArrayList<Route> routesForStop = dao.getRoutesByStopTag("2371");
-
-        for (Route route : routesForStop) {
-            System.out.println("Route: " + route.getRouteId());
-            for (Vehicle vehicle : route.getVehicles().values()) {
-                System.out.println("Vehicle: " + vehicle.getId());
-            }
-        }
+        UmoiqApiCaller.getRequest(new String[][]{{"command", "routeConfig"}});
 
 
     }
