@@ -21,7 +21,7 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
 
     public static final String baseUrl = "https://webservices.umoiq.com/service/publicXMLFeed";
 
-    public ArrayList<Vehicle> getVehiclesByRoute(int routeId) {
+    public ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -29,7 +29,7 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
         Map<String, String> params = new HashMap<>();
         params.put("command", "vehicleLocations");
         params.put("a", "ttc");
-        params.put("r", Integer.toString(routeId));
+        params.put("r", routeTag);
 
         // Builds the URL with the parameters
         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl).newBuilder();
@@ -81,7 +81,7 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
 
     }
 
-    public HashSet<String> getStopTagsByRouteId(int routeId) {
+    public HashSet<String> getStopTagsByRouteTag(String routeTag) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -89,7 +89,7 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
         Map<String, String> params = new HashMap<>();
         params.put("command", "routeConfig");
         params.put("a", "ttc");
-        params.put("r", Integer.toString(routeId));
+        params.put("r", routeTag);
 
         // Builds the URL with the parameters
         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl).newBuilder();
@@ -139,15 +139,15 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
      * @return HashMap mapping route ids to a set of stop tags for TTC
      * @see HashMap
      */
-    public HashMap<Integer, HashSet<String>> getRouteIdsToStopTags() {
+    public HashMap<String, HashSet<String>> getRouteTagsToStopTags() {
 
         // Get list of all route ids
-        ArrayList<Integer> routeTags = getRouteList();
+        ArrayList<String> routeTags = getRouteList();
 
         // Get set of all stop tags for each route id and map the route id to set of stop tags
-        HashMap<Integer, HashSet<String>> routeIdToStopTags = new HashMap<>();
-        for (Integer routeTag : routeTags) {
-            routeIdToStopTags.put(routeTag, getStopTagsByRouteId(routeTag));
+        HashMap<String, HashSet<String>> routeIdToStopTags = new HashMap<>();
+        for (String routeTag : routeTags) {
+            routeIdToStopTags.put(routeTag, getStopTagsByRouteTag(routeTag));
         }
 
         // TODO: Above loop is far too slow
@@ -160,18 +160,18 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
      * @return HashMap mapping stop tags to a set of route ids for TTC
      * @see HashMap
      */
-    public HashMap<String, HashSet<Integer>> getStopTagsToRouteIds() {
+    public HashMap<String, HashSet<String>> getStopTagsToRouteTags() {
 
-        HashMap<Integer, HashSet<String>> routeIdToStopTags = getRouteIdsToStopTags();
+        HashMap<String, HashSet<String>> routeIdToStopTags = getRouteTagsToStopTags();
 
         // Reverse set to map stop tag to set of route ids
-        HashMap<String, HashSet<Integer>> stopTagToRouteIds = new HashMap<>();
-        for (Map.Entry<Integer, HashSet<String>> entry : routeIdToStopTags.entrySet()) {
+        HashMap<String, HashSet<String>> stopTagToRouteIds = new HashMap<>();
+        for (Map.Entry<String, HashSet<String>> entry : routeIdToStopTags.entrySet()) {
             for (String stopTag : entry.getValue()) {
                 if (stopTagToRouteIds.containsKey(stopTag)) {
                     stopTagToRouteIds.get(stopTag).add(entry.getKey());
                 } else {
-                    HashSet<Integer> routeIds = new HashSet<>();
+                    HashSet<String> routeIds = new HashSet<>();
                     routeIds.add(entry.getKey());
                     stopTagToRouteIds.put(stopTag, routeIds);
                 }
@@ -186,27 +186,27 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
 
         ArrayList<Route> routes = new ArrayList<>();
 
-        HashSet<Integer> routeIds = new HashSet<>(getStopTagsToRouteIds().get(tag));
+        HashSet<String> routeTags = new HashSet<>(getStopTagsToRouteTags().get(tag));
 
-        for (Integer routeId : routeIds) {
+        for (String routeTag : routeTags) {
 
             // Generate Map of vehicle ids to vehicles
             HashMap<Integer, Vehicle> vehicles = new HashMap<>();
-            for (Vehicle vehicle : getVehiclesByRoute(routeId)) {
+            for (Vehicle vehicle : getVehiclesByRouteTag(routeTag)) {
                 vehicles.put(vehicle.getId(), vehicle);
             }
 
             // Add new Route object to ArrayList
             routes.add(new Route(
                     vehicles,
-                    routeId));
+                    routeTag));
         }
 
         return routes;
 
     }
 
-    public ArrayList<Integer> getRouteList() {
+    public ArrayList<String> getRouteList() {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -240,13 +240,13 @@ public class VehicleLocationDAO implements VehicleLocationDataAccessInterface {
 
             NodeList nodeList = doc.getElementsByTagName("route");
 
-            ArrayList<Integer> routes = new ArrayList<>();
+            ArrayList<String> routes = new ArrayList<>();
 
             // For each vehicle in the nodeList, create a new Vehicle object and add it to the ArrayList
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
 
-                routes.add(Integer.parseInt(element.getAttribute("tag")));
+                routes.add(element.getAttribute("tag"));
             }
 
             return routes;

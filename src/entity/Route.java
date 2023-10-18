@@ -5,10 +5,10 @@ import java.util.HashMap;
 public class Route {
 
     HashMap<Integer, Vehicle> vehicles;
-    int routeId;
+    String routeTag;
 
-    public Route(HashMap<Integer, Vehicle> vehicles, int routeId) {
-        this.routeId = routeId;
+    public Route(HashMap<Integer, Vehicle> vehicles, String routeTag) {
+        this.routeTag = routeTag;
         this.vehicles = new HashMap<>(vehicles);
     }
 
@@ -16,7 +16,7 @@ public class Route {
         return vehicles;
     }
 
-    public int getRouteId() {
-        return routeId;
+    public String getRouteId() {
+        return routeTag;
     }
 }

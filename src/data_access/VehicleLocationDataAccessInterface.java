@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface VehicleLocationDataAccessInterface {
 
-    public ArrayList<Vehicle> getVehiclesByRoute(int routeId);
+    public ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag);
 
     public ArrayList<Route> getRoutesByStopTag(String tag);
 
