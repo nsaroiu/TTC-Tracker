@@ -8,10 +8,10 @@ import java.util.HashSet;
 
 public interface RouteDataAccessInterface {
 
-    public ArrayList<String> getRouteTagList();
+    ArrayList<String> getRouteTagList();
 
-    public ArrayList<Route> getRoutesByStopTag(String tag);
+    ArrayList<Route> getRoutesByStopTag(String tag);
 
-    public HashMap<String, HashSet<String>> getStopTagsToRouteTags();
+    HashMap<String, HashSet<String>> getStopTagsToRouteTags();
 
 }

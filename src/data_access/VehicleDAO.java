@@ -13,7 +13,7 @@ public class VehicleDAO implements VehicleDataAccessInterface {
     public ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag) {
 
         try {
-            String[][] params = {{"command", "vehicleLocations"}, {"r", routeTag}};
+            String[][] params = {{"command", "vehicleLocations"}, {"r", routeTag}, {"t", "0"}};
             Document doc = UmoiqApiCaller.getRequest(params);
 
             NodeList nodeList = doc.getElementsByTagName("vehicle");

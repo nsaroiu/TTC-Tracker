@@ -63,7 +63,7 @@ public class UmoiqApiCaller {
             NodeList nodeList = docCopy.getElementsByTagName("Error");
 
             // If the xml response contains an error, throw an InvalidRequestException containing the error message
-            if (nodeList != null) {
+            if (nodeList.getLength() > 0) {
                 throw new InvalidRequestException(nodeList.item(0).getTextContent());
             }
 

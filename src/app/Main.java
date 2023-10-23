@@ -11,7 +11,8 @@ public class Main {
 
         VehicleDataAccessInterface dao = new VehicleDAO();
 
-        UmoiqApiCaller.getRequest(new String[][]{{"command", "routeConfig"}});
+//        UmoiqApiCaller.getRequest(new String[][]{{"command", "routeConfig"}});
+        System.out.println(dao.getVehiclesByRouteTag("510"));
 
 
     }

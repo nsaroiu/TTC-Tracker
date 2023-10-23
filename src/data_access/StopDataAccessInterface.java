@@ -5,8 +5,8 @@ import java.util.HashSet;
 
 public interface StopDataAccessInterface {
 
-    public HashSet<String> getStopTagsByRouteTag(String routeTag);
+    HashSet<String> getStopTagsByRouteTag(String routeTag);
 
-    public HashMap<String, HashSet<String>> getRouteTagsToStopTags();
+    HashMap<String, HashSet<String>> getRouteTagsToStopTags();
 
 }

@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface VehicleDataAccessInterface {
 
-    public ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag);
+    ArrayList<Vehicle> getVehiclesByRouteTag(String routeTag);
 
 }
