@@ -8,7 +8,7 @@ public class Stop {
     Location location;
     HashMap<Integer, Route> routes;
 
-    public Stop(String tag, double latitude, double longitude, HashMap<Integer, Route> routes) {
+    public Stop(String tag, float latitude, float longitude, HashMap<Integer, Route> routes) {
         this.tag = tag;
         this.location = new Location(latitude, longitude);
         this.routes = new HashMap<>(routes);

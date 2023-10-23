@@ -1,10 +1,10 @@
 package entity;
 
 public class Location {
-    private double latitude;
-    private double longitude;
+    private float latitude;
+    private float longitude;
 
-    public Location(double latitude, double longitude) {
+    public Location(float latitude, float longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

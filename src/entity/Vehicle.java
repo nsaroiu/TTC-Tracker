@@ -7,7 +7,7 @@ public class Vehicle {
     Location location;
     int direction;
 
-    public Vehicle(int id, int speed, double latitude, double longitude, int direction) {
+    public Vehicle(int id, int speed, float latitude, float longitude, int direction) {
         this.id = id;
         this.speed = speed;
         this.location = new Location(latitude, longitude);
