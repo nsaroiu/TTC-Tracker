@@ -5,14 +5,12 @@ import java.util.HashMap;
 public class Stop {
 
     String tag;
-    float latitude;
-    float longitude;
+    Location location;
     HashMap<Integer, Route> routes;
 
-    public Stop(String tag, float latitude, float longitude, HashMap<Integer, Route> routes) {
+    public Stop(String tag, double latitude, double longitude, HashMap<Integer, Route> routes) {
         this.tag = tag;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.location = new Location(latitude, longitude);
         this.routes = new HashMap<>(routes);
     }
 
@@ -20,13 +18,7 @@ public class Stop {
         return tag;
     }
 
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public float getLongitude() {
-        return longitude;
-    }
+    public Location getLocation() { return location; }
 
     public HashMap<Integer, Route> getRoutes() {
         return routes;

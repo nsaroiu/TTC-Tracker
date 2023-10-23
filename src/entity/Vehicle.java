@@ -4,15 +4,13 @@ public class Vehicle {
 
     int id;
     int speed;
-    float latitude;
-    float longitude;
+    Location location;
     int direction;
 
-    public Vehicle(int id, int speed, float latitude, float longitude, int direction) {
+    public Vehicle(int id, int speed, double latitude, double longitude, int direction) {
         this.id = id;
         this.speed = speed;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.location = new Location(latitude, longitude);
         this.direction = direction;
     }
 
@@ -24,13 +22,7 @@ public class Vehicle {
         return speed;
     }
 
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public float getLongitude() {
-        return longitude;
-    }
+    public Location getLocation() { return location; }
 
     public int getDirection() {
         return direction;
