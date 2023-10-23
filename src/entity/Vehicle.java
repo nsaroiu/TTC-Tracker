@@ -22,13 +22,7 @@ public class Vehicle {
         return speed;
     }
 
-    public double getLatitude() {
-        return location.getLatitude();
-    }
-
-    public double getLongitude() {
-        return location.getLongitude();
-    }
+    public Location getLocation() { return location; }
 
     public int getDirection() {
         return direction;

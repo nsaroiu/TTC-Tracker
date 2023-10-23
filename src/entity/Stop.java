@@ -18,13 +18,7 @@ public class Stop {
         return tag;
     }
 
-    public double getLatitude() {
-        return location.getLatitude();
-    }
-
-    public double getLongitude() {
-        return location.getLongitude();
-    }
+    public Location getLocation() { return location; }
 
     public HashMap<Integer, Route> getRoutes() {
         return routes;
