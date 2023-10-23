@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class RouteDAO implements RouteDataAccessInterface {
 
+    /** Returns a list of route tags for TTC.
+     *
+     * @return ArrayList of route tags for TTC
+     */
     public ArrayList<String> getRouteTagList() {
 
         try {
@@ -40,6 +44,11 @@ public class RouteDAO implements RouteDataAccessInterface {
 
     }
 
+    /** Given a stop tag, return a list of all routes that pass through the given stop.
+     *
+     * @param tag String representing stop tag
+     * @return List of Route objects for TTC
+     */
     public ArrayList<Route> getRoutesByStopTag(String tag) {
 
         ArrayList<Route> routes = new ArrayList<>();
@@ -65,8 +74,9 @@ public class RouteDAO implements RouteDataAccessInterface {
 
     }
 
-    /**
-     * @return HashMap mapping stop tags to a set of route ids for TTC
+    /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
+     *
+     * @return HashMap mapping stop tags to a set of route tags for TTC
      * @see HashMap
      */
     public HashMap<String, HashSet<String>> getStopTagsToRouteTags() {

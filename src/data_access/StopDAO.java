@@ -1,5 +1,8 @@
 package data_access;
 
+import entity.Stop;
+import jdk.jshell.spi.ExecutionControl;
+import kotlin.NotImplementedError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -58,6 +61,10 @@ public class StopDAO implements StopDataAccessInterface {
 
         return routeTagToStopTags;
 
+    }
+
+    public HashSet<Stop> getAllStops() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 }
