@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.Route;
 import entity.Stop;
 import jdk.jshell.spi.ExecutionControl;
 import kotlin.NotImplementedError;
@@ -13,6 +14,11 @@ import java.util.HashSet;
 
 public class StopDAO implements StopDataAccessInterface {
 
+    /** Given a route tag, returns a set of stops on that route.
+     *
+     * @param routeTag String representing the route tag
+     * @return HashSet of stop tags on the route
+     */
     public HashSet<String> getStopTagsByRouteTag(String routeTag) {
 
         try {
@@ -41,8 +47,9 @@ public class StopDAO implements StopDataAccessInterface {
 
     }
 
-    /**
-     * @return HashMap mapping route ids to a set of stop tags for TTC
+    /** Returns a HashMap mapping route tags to a set of all stops that the route passes through.
+     *
+     * @return HashMap mapping route tags to a set of stop tags
      * @see HashMap
      */
     public HashMap<String, HashSet<String>> getRouteTagsToStopTags() {
@@ -63,8 +70,60 @@ public class StopDAO implements StopDataAccessInterface {
 
     }
 
+    /** Returns a set of all stops in the TTC.
+     *
+     * @return HashSet of Stop Objects.
+     */
     public HashSet<Stop> getAllStops() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        RouteDataAccessInterface routeDAO = new RouteDAO();
+
+        // Stores set of stop tags that have already been added
+        HashSet<String> previousStops = new HashSet<>();
+
+        // Set of stops to be returned
+        HashSet<Stop> stops = new HashSet<>();
+
+        // Get list of all route ids
+        ArrayList<String> routeTags = routeDAO.getRouteTagList();
+
+        for (String routeTag : routeTags) {
+            try {
+                Document doc = UmoiqApiCaller.getRequest(new String[][]{{"command", "routeConfig"}, {"r", routeTag}});
+
+                NodeList nodeList = doc.getElementsByTagName("stop");
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Element element = (Element) nodeList.item(i);
+
+                    String stopTag = element.getAttribute("tag");
+
+                    // If stop tag has already been added, skip
+                    if (previousStops.contains(stopTag)) continue;
+                    else previousStops.add(stopTag);
+
+//                    // Create HashMap of route tags to Route objects
+//                    ArrayList<Route> routeList = routeDAO.getRoutesByStopTag(stopTag);
+//                    HashMap<String, Route> routeMap = new HashMap<>();
+//                    for (Route route : routeList) {
+//                        routeMap.put(route.getRouteTag(), route);
+//                    }
+
+                    // Add new Stop object to HashSet
+                    stops.add(new Stop(
+                            stopTag,
+                            Float.parseFloat(element.getAttribute("lat")),
+                            Float.parseFloat(element.getAttribute("lon")),
+                            null
+                    ));
+                }
+
+            } catch (InvalidRequestException | NullPointerException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return stops;
     }
 
 }
