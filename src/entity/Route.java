@@ -16,7 +16,7 @@ public class Route {
         return vehicles;
     }
 
-    public String getRouteId() {
+    public String getRouteTag() {
         return routeTag;
     }
 }

@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public interface RouteDataAccessInterface {
 
-    /** Returns a list of route tags for TTC.
+    /** Returns a list of all route tags for TTC.
      *
      * @return ArrayList of route tags for TTC
      */

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class RouteDAO implements RouteDataAccessInterface {
 
-    /** Returns a list of route tags for TTC.
+    /** Returns a list of all route tags for TTC.
      *
      * @return ArrayList of route tags for TTC
      */

@@ -6,12 +6,12 @@ public class Stop {
 
     String tag;
     Location location;
-    HashMap<Integer, Route> routes;
+    HashMap<String, Route> routes;
 
-    public Stop(String tag, float latitude, float longitude, HashMap<Integer, Route> routes) {
+    public Stop(String tag, float latitude, float longitude, HashMap<String, Route> routes) {
         this.tag = tag;
         this.location = new Location(latitude, longitude);
-        this.routes = new HashMap<>(routes);
+        this.routes = routes;
     }
 
     public String getTag() {
@@ -20,7 +20,7 @@ public class Stop {
 
     public Location getLocation() { return location; }
 
-    public HashMap<Integer, Route> getRoutes() {
+    public HashMap<String, Route> getRoutes() {
         return routes;
     }
 }
