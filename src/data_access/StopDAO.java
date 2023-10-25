@@ -148,6 +148,10 @@ public class StopDAO implements StopDataAccessInterface {
         return stopSet;
     }
 
+    /** Returns a list of all stop tags and their respective locations.
+     *
+     * @return ArrayList of HashMaps mapping stop tags to locations.
+     */
     public HashMap<String, Location> getAllStopTagsAndLocations() {
         RouteDataAccessInterface routeDAO = new RouteDAO();
 
