@@ -1,7 +1,9 @@
 package data_access;
 
+import entity.Location;
 import entity.Stop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -26,5 +28,11 @@ public interface StopDataAccessInterface {
      * @return HashSet of Stop Objects.
      */
     HashSet<Stop> getAllStops();
+
+    /** Returns a list of all stop tags and their respective locations.
+     *
+     * @return ArrayList of HashMaps mapping stop tags to locations.
+     */
+    HashMap<String, Location> getAllStopTagsAndLocations();
 
 }
