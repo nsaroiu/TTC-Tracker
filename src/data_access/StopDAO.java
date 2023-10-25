@@ -1,9 +1,9 @@
 package data_access;
 
+import entity.Location;
 import entity.Route;
 import entity.Stop;
-import jdk.jshell.spi.ExecutionControl;
-import kotlin.NotImplementedError;
+import entity.Vehicle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -76,12 +76,13 @@ public class StopDAO implements StopDataAccessInterface {
      */
     public HashSet<Stop> getAllStops() {
         RouteDataAccessInterface routeDAO = new RouteDAO();
+        VehicleDataAccessInterface vehicleDAO = new VehicleDAO();
 
         // Stores set of stop tags that have already been added
         HashSet<String> previousStops = new HashSet<>();
 
-        // Set of stops to be returned
-        HashSet<Stop> stops = new HashSet<>();
+        // Map of stopTag to stops
+        HashMap<String, Stop> stops = new HashMap<>();
 
         // Get list of all route ids
         ArrayList<String> routeTags = routeDAO.getRouteTagList();
@@ -97,24 +98,39 @@ public class StopDAO implements StopDataAccessInterface {
 
                     String stopTag = element.getAttribute("tag");
 
-                    // If stop tag has already been added, skip
-                    if (previousStops.contains(stopTag)) continue;
-                    else previousStops.add(stopTag);
+                    // Map of routeTag to Route to store in Stop object
+                    HashMap<String, Route> routes = new HashMap<>();
 
-//                    // Create HashMap of route tags to Route objects
-//                    ArrayList<Route> routeList = routeDAO.getRoutesByStopTag(stopTag);
-//                    HashMap<String, Route> routeMap = new HashMap<>();
-//                    for (Route route : routeList) {
-//                        routeMap.put(route.getRouteTag(), route);
-//                    }
+                    // If stop tag has already been added, update routes
+                    if (previousStops.contains(stopTag) && !stops.get(stopTag).getRoutes().containsKey(routeTag)) routes = stops.get(stopTag).getRoutes();
+
+                    if (element.getAttribute("lat").isEmpty()) continue;
+
+                    previousStops.add(stopTag);
+
+                    // Creates a HashMap of vehicle ids to Vehicle objects for Route Object
+                    ArrayList<Vehicle> vehicles = vehicleDAO.getVehiclesByRouteTag(routeTag);
+                    HashMap<Integer, Vehicle> vehicleMap = new HashMap<>();
+                    for (Vehicle vehicle : vehicles) {
+                        vehicleMap.put(vehicle.getId(), vehicle);
+                    }
+
+                    // Adds new Route object to HashMap
+                    routes.put(routeTag, new Route(
+                            vehicleMap,
+                            routeTag
+                    ));
+
+                    System.out.println(routeTag + " " + stopTag);
 
                     // Add new Stop object to HashSet
-                    stops.add(new Stop(
+                    stops.put(stopTag, new Stop(
                             stopTag,
                             Float.parseFloat(element.getAttribute("lat")),
                             Float.parseFloat(element.getAttribute("lon")),
-                            null
+                            routes
                     ));
+
                 }
 
             } catch (InvalidRequestException | NullPointerException e) {
@@ -123,7 +139,55 @@ public class StopDAO implements StopDataAccessInterface {
             }
         }
 
-        return stops;
+        // Trasnforms HashMap of stopTag to Stop objects into a HashSet of Stop objects
+        HashSet<Stop> stopSet = new HashSet<>();
+        for (String stopTag : stops.keySet()) {
+            stopSet.add(stops.get(stopTag));
+        }
+
+        return stopSet;
+    }
+
+    public HashMap<String, Location> getAllStopTagsAndLocations() {
+        RouteDataAccessInterface routeDAO = new RouteDAO();
+
+        // Get list of all route tags
+        ArrayList<String> routeTags = routeDAO.getRouteTagList();
+
+        HashMap<String, Location> stopTagsAndLocations = new HashMap<>();
+
+        for (String routeTag : routeTags) {
+            String[][] params = {{"command", "routeConfig"}, {"r", routeTag}};
+
+            NodeList nodeList;
+
+            try {
+                Document doc = UmoiqApiCaller.getRequest(params);
+
+                nodeList = doc.getElementsByTagName("stop");
+
+            } catch (InvalidRequestException | NullPointerException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element element = (Element) nodeList.item(i);
+
+                if (element.getAttribute("lat").isEmpty()) continue;
+                if (stopTagsAndLocations.containsKey(element.getAttribute("tag"))) continue;
+
+                System.out.println(routeTag + " " + element.getAttribute("tag") + " " + element.getAttribute("lat") + " " + element.getAttribute("lon"));
+
+                stopTagsAndLocations.put(element.getAttribute("tag"), new Location(
+                        Float.parseFloat(element.getAttribute("lat")),
+                        Float.parseFloat(element.getAttribute("lon"))
+                ));
+
+            }
+        }
+
+        return stopTagsAndLocations;
     }
 
 }

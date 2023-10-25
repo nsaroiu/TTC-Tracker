@@ -1,10 +1,10 @@
 package app;
 
 import data_access.*;
+import entity.Location;
 import entity.Stop;
-import entity.Vehicle;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Main {
@@ -13,11 +13,8 @@ public class Main {
 
         StopDataAccessInterface stopDAO = new StopDAO();
 
-        HashSet<Stop> stops = stopDAO.getAllStops();
+        HashMap<String, Location> stops = stopDAO.getAllStopTagsAndLocations();
 
-        for (Stop stop : stops) {
-            System.out.println(stop.getTag());
-        }
 
     }
 
