@@ -1,6 +1,7 @@
 package use_case;
 
 import data_access.StopDataAccessInterface;
+import entity.Location;
 import entity.Stop;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class StopsInteractor implements StopsInputBoundary {
 
     @Override
     public void execute() {
-        HashSet<Stop> allStops = stopDataAccessInterface.getAllStops();
+        HashMap<String, Location> allStops = stopDataAccessInterface.getAllStopTagsAndLocations();
         if (allStops.isEmpty()){
             stopPresenter.prepareFailView("Could not fetch any stops.");
         }
