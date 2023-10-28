@@ -1,20 +1,22 @@
 package use_case;
 
+import entity.Location;
 import entity.Stop;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class StopsOutputData {
 
-    private HashSet<Stop> stopsSet;
+    private HashMap<String, Location> stopsMap;
 
-    public StopsOutputData(HashSet<Stop> stopsSet) {
-        this.stopsSet = stopsSet;
+    public StopsOutputData(HashMap<String, Location> stopsMap) {
+        this.stopsMap = stopsMap;
     }
 
-    public HashSet<Stop> getStopsSet() {
-        return stopsSet;
+    public HashMap<String, Location> getStopsMap() {
+        return stopsMap;
     }
 
 }
