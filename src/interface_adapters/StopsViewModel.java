@@ -6,6 +6,8 @@ import java.beans.PropertyChangeSupport;
 public class StopsViewModel extends ViewModel{
     private StopsState state = new StopsState();
 
+    public final String TITLE_LABEL = "Stops View";
+
     public StopsViewModel(){super("stops");}
     public void setState(StopsState state) {
         this.state = state;
