@@ -1,17 +1,17 @@
 package entity;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class Stop {
 
     String tag;
     Location location;
-    HashMap<String, Route> routes;
+    HashSet<String> routeTags;
 
-    public Stop(String tag, float latitude, float longitude, HashMap<String, Route> routes) {
+    public Stop(String tag, float latitude, float longitude, HashSet<String> routeTags) {
         this.tag = tag;
         this.location = new Location(latitude, longitude);
-        this.routes = routes;
+        this.routeTags = routeTags;
     }
 
     public String getTag() {
@@ -20,7 +20,7 @@ public class Stop {
 
     public Location getLocation() { return location; }
 
-    public HashMap<String, Route> getRoutes() {
-        return routes;
+    public HashSet<String> getRoutes() {
+        return routeTags;
     }
 }

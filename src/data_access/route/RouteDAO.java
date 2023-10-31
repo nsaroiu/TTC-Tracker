@@ -2,9 +2,12 @@ package data_access.route;
 
 import au.com.bytecode.opencsv.CSVReader;
 import data_access.*;
+import data_access.stop.StopDAO;
+import data_access.stop.StopDataAccessInterface;
 import data_access.vehicle.VehicleDAO;
 import data_access.vehicle.VehicleDataAccessInterface;
 import entity.Route;
+import entity.Stop;
 import entity.Vehicle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,11 +22,11 @@ public class RouteDAO implements RouteDataAccessInterface {
 
     private final String stopCsvFilename = "src/data/stopData.csv";
 
-    /** Returns a list of all route tags for TTC.
+    /** Returns a set of all route tags for TTC.
      *
-     * @return ArrayList of route tags for TTC
+     * @return HashSet of route tags for TTC
      */
-    public ArrayList<String> getRouteTagList() {
+    public HashSet<String> getRouteTags() {
 
         try {
             String[][] params = {{"command", "routeList"}};
@@ -31,7 +34,7 @@ public class RouteDAO implements RouteDataAccessInterface {
 
             NodeList nodeList = doc.getElementsByTagName("route");
 
-            ArrayList<String> routes = new ArrayList<>();
+            HashSet<String> routes = new HashSet<>();
 
             // Add each route tag to the ArrayList
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -50,12 +53,46 @@ public class RouteDAO implements RouteDataAccessInterface {
 
     }
 
-    /** Given a stop tag, return a list of all routes that pass through the given stop.
+    /** Given a stop tag, return a set of route tags that pass through the stop.
+     *
+     * @param stopTag String representing stop tag
+     * @return HashSet of route tags that pass through the stop
+     */
+    public HashSet<String> getRouteTagsByStopTag(String stopTag) {
+        // Initialize CSV reader for Stop data
+        FileReader filereader = null;
+        try {
+            filereader = new FileReader(stopCsvFilename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert filereader != null; // If this fails, the filename needs to be fixed
+        CSVReader csvReader = new CSVReader(filereader);
+
+        try {
+            String[] nextRecord = csvReader.readNext();
+
+            // If the stop tag is found, return the set of route tags
+            while ((nextRecord = csvReader.readNext()) != null) {
+                if (nextRecord[0].equals(stopTag)) {
+                    return new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    /** Given a stop tag, return a set of all routes that pass through the given stop.
      *
      * @param tag String representing stop tag
-     * @return List of Route objects for TTC
+     * @return HashSet of Route objects that pass through the stop
      */
-    public ArrayList<Route> getRoutesByStopTag(String tag) {
+    public HashSet<Route> getRoutesByStopTag(String tag) {
+
+        StopDataAccessInterface stopDAO = new StopDAO();
 
         // Initialize CSV reader for Stop data
         FileReader filereader = null;
@@ -68,7 +105,7 @@ public class RouteDAO implements RouteDataAccessInterface {
         CSVReader csvReader = new CSVReader(filereader);
 
         // Initialize ArrayList to store routes
-        ArrayList<Route> routes = new ArrayList<>();
+        HashSet<Route> routes = new HashSet<>();
 
         try {
             String[] nextRecord = csvReader.readNext();
@@ -84,18 +121,28 @@ public class RouteDAO implements RouteDataAccessInterface {
                             vehicles.put(vehicle.getId(), vehicle);
                         }
 
+                        // Create Map of Stops for Route
+                        HashSet<Stop> stops = stopDAO.getStopsByRouteTag(routeTag);
+                        HashMap<String, Stop> stopMap= new HashMap<>();
+                        for (Stop stop : stops) {
+                            stopMap.put(stop.getTag(), stop);
+                        }
+
                         // Add new Route object to ArrayList
                         routes.add(new Route(
                                 vehicles,
+                                stopMap,
                                 routeTag));
                     }
+
+                    return routes;
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return routes;
+        return null;
     }
 
     /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
