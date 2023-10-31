@@ -2,24 +2,30 @@ package data_access.route;
 
 import entity.Route;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public interface RouteDataAccessInterface {
 
-    /** Returns a list of all route tags for TTC.
+    /** Returns a set of all route tags for TTC.
      *
-     * @return ArrayList of route tags for TTC
+     * @return HashSet of route tags for TTC
      */
-    ArrayList<String> getRouteTagList();
+    HashSet<String> getRouteTags();
 
-    /** Given a stop tag, return a list of all routes that pass through the given stop.
+    /** Given a stop tag, return a set of route tags that pass through the stop.
+     *
+     * @param stopTag String representing stop tag
+     * @return HashSet of route tags that pass through the stop
+     */
+    HashSet<String> getRouteTagsByStopTag(String stopTag);
+
+    /** Given a stop tag, return a set of all routes that pass through the given stop.
      *
      * @param tag String representing stop tag
-     * @return List of Route objects for TTC
+     * @return HashSet of Route objects that pass through the stop
      */
-    ArrayList<Route> getRoutesByStopTag(String tag);
+    HashSet<Route> getRoutesByStopTag(String tag);
 
     /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
      *

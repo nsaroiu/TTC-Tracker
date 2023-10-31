@@ -51,7 +51,7 @@ public class Main {
 
             StringBuilder routeTags = new StringBuilder();
 
-            for (String routeTag : stop.getRoutes().keySet()) {
+            for (String routeTag : stop.getRoutes()) {
                 routeTags.append(routeTag).append(",");
             }
 

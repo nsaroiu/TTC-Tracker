@@ -15,6 +15,13 @@ public interface StopDataAccessInterface {
      */
     HashSet<String> getStopTagsByRouteTag(String routeTag);
 
+    /** Given a route tag, return a list of all stops that the route passes through.
+     *
+     * @param routeTag String representing route tag
+     * @return HashSet of Stop objects that the route passes through
+     */
+    HashSet<Stop> getStopsByRouteTag(String routeTag);
+
     /** Returns a HashMap mapping route tags to a set of all stops that the route passes through.
      *
      * @return HashMap mapping route tags to a set of stop tags

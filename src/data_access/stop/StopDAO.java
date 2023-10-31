@@ -4,12 +4,8 @@ import au.com.bytecode.opencsv.CSVReader;
 import data_access.*;
 import data_access.route.RouteDAO;
 import data_access.route.RouteDataAccessInterface;
-import data_access.vehicle.VehicleDAO;
-import data_access.vehicle.VehicleDataAccessInterface;
 import entity.Location;
-import entity.Route;
 import entity.Stop;
-import entity.Vehicle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -17,9 +13,9 @@ import org.w3c.dom.NodeList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class StopDAO implements StopDataAccessInterface {
 
@@ -58,6 +54,28 @@ public class StopDAO implements StopDataAccessInterface {
 
     }
 
+    /** Given a route tag, return a list of all stops that the route passes through.
+     *
+     * @param routeTag String representing route tag
+     * @return HashSet of Stop objects that the route passes through
+     */
+    public HashSet<Stop> getStopsByRouteTag(String routeTag) {
+
+        HashSet<Stop> stops = new HashSet<>();
+        HashSet<Stop> allStops = getAllStops();
+
+        HashSet<String> stopTags = getStopTagsByRouteTag(routeTag);
+
+        for (Stop stop : allStops) {
+            if (stopTags.contains(stop.getTag())) {
+                stops.add(stop);
+            }
+        }
+
+        return stops;
+
+    }
+
     /** Returns a HashMap mapping route tags to a set of all stops that the route passes through.
      *
      * @return HashMap mapping route tags to a set of stop tags
@@ -67,7 +85,7 @@ public class StopDAO implements StopDataAccessInterface {
 
         RouteDataAccessInterface routeDAO = new RouteDAO();
         // Get list of all route ids
-        ArrayList<String> routeTags = routeDAO.getRouteTagList();
+        HashSet<String> routeTags = routeDAO.getRouteTags();
 
         // Initialize CSV reader for Stop data
         FileReader filereader = null;
@@ -116,25 +134,6 @@ public class StopDAO implements StopDataAccessInterface {
      * @return HashSet of Stop Objects.
      */
     public HashSet<Stop> getAllStops() {
-        VehicleDataAccessInterface vehicleDAO = new VehicleDAO();
-
-        // Generates Map of Routes
-        HashMap<String, HashSet<String>> routeTagsToStopTags = getRouteTagsToStopTags();
-        HashMap<String, Route> routes = new HashMap<>();
-
-        // Adds all Vehicles to respective Routes
-        for (String routeTag : routeTagsToStopTags.keySet()) {
-            // Generate Map of vehicle ids to vehicles
-            HashMap<Integer, Vehicle> vehicles = new HashMap<>();
-            for (Vehicle vehicle : vehicleDAO.getVehiclesByRouteTag(routeTag)) {
-                vehicles.put(vehicle.getId(), vehicle);
-            }
-
-            // Add new Route object to HashMap
-            routes.put(routeTag, new Route(
-                    vehicles,
-                    routeTag));
-        }
 
         // Initialize CSV reader for Stop data
         FileReader filereader = null;
@@ -152,26 +151,19 @@ public class StopDAO implements StopDataAccessInterface {
         try {
             String[] nextRecord = csvReader.readNext();
 
+            // Iterate over each entry in csv and create Stop object for each entry
             while ((nextRecord = csvReader.readNext()) != null) {
                 String stopTag = nextRecord[0];
                 float lat = Float.parseFloat(nextRecord[1]);
                 float lon = Float.parseFloat(nextRecord[2]);
-                String[] csvRouteTags = nextRecord[3].split(",");
-
-                // Map of routeTag to Route to store in Stop object
-                HashMap<String, Route> stopRoutes = new HashMap<>();
-
-                // Add curr stop to set of stops for each route tag
-                for (String routeTag : csvRouteTags) {
-                    stopRoutes.put(routeTag, routes.get(routeTag));
-                }
+                HashSet<String> routeTags = new HashSet<>(List.of(nextRecord[3].split(",")));
 
                 // Add new Stop object to HashSet
                 stops.add(new Stop(
                         stopTag,
                         lat,
                         lon,
-                        stopRoutes
+                        routeTags
                 ));
             }
         } catch (IOException e) {
