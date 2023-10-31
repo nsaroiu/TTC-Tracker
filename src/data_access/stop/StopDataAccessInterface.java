@@ -1,9 +1,8 @@
-package data_access;
+package data_access.stop;
 
 import entity.Location;
 import entity.Stop;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 

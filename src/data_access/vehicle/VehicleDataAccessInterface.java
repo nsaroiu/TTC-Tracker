@@ -1,4 +1,4 @@
-package data_access;
+package data_access.vehicle;
 
 import entity.Vehicle;
 
