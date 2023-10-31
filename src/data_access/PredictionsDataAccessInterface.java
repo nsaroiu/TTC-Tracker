@@ -10,5 +10,5 @@ public interface PredictionsDataAccessInterface {
      *
      * @return
      */
-    public HashMap<String, ArrayList<Integer>> getAllDirectionsAndArrivals();
+    public HashMap<String, ArrayList<Integer>> getAllDirectionsAndArrivals(String stopTag);
 }

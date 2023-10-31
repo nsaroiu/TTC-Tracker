@@ -1,5 +1,5 @@
 package use_case;
 
 public interface PredictionsInputBoundary {
-    void execute(String stopTag);
+    void execute(PredictionsInputData predictionsInputData);
 }

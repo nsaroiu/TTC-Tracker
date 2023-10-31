@@ -15,8 +15,9 @@ public class PredictionsInteractor implements PredictionsInputBoundary{
         this.predictionsPresenter = predictionsPresenter;
     }
     @Override
-    public void execute(String stopTag) {
-        HashMap<String, ArrayList<Integer>> directionToArrivals = predictionsDataAccessInterface.getAllDirectionsAndArrivals();
+    public void execute(PredictionsInputData predictionsInputData) {
+        String stopTag = predictionsInputData.getStop();
+        HashMap<String, ArrayList<Integer>> directionToArrivals = predictionsDataAccessInterface.getAllDirectionsAndArrivals(stopTag);
         if (directionToArrivals.isEmpty()){
             predictionsPresenter.prepareFailView("Could not find any predictions.");
         }
