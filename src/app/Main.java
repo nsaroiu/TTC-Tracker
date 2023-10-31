@@ -1,21 +1,33 @@
 package app;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import data_access.*;
-import entity.Location;
+import data_access.route.RouteDAO;
+import data_access.route.RouteDataAccessInterface;
+import data_access.stop.StopDAO;
+import data_access.stop.StopDataAccessInterface;
 import entity.Stop;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+        StopDataAccessInterface stopDAO = new StopDAO();
+        RouteDataAccessInterface routeDAO = new RouteDAO();
+
+        HashMap<String, HashSet<String>> stopTagsToRouteTags = routeDAO.getStopTagsToRouteTags();
+
+        for (String stopTag : stopTagsToRouteTags.keySet()) {
+            System.out.println(stopTag + ": " + stopTagsToRouteTags.get(stopTag));
+        }
+
+    }
+
+    public static void updateStopDataCsv() throws IOException {
 
         StopDataAccessInterface stopDAO = new StopDAO();
 
@@ -32,10 +44,10 @@ public class Main {
 
             data[0] = stop.getTag();
 
-            Float lat = stop.getLocation().getLatitude();
-            Float lon = stop.getLocation().getLongitude();
-            data[1] = lat.toString();
-            data[2] = lon.toString();
+            float lat = stop.getLocation().getLatitude();
+            float lon = stop.getLocation().getLongitude();
+            data[1] = Float.toString(lat);
+            data[2] = Float.toString(lon);
 
             StringBuilder routeTags = new StringBuilder();
 
@@ -55,7 +67,6 @@ public class Main {
         }
 
         writer.close();
-
 
     }
 

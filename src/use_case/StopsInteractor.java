@@ -1,11 +1,9 @@
 package use_case;
 
-import data_access.StopDataAccessInterface;
+import data_access.stop.StopDataAccessInterface;
 import entity.Location;
-import entity.Stop;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class StopsInteractor implements StopsInputBoundary {
     final StopDataAccessInterface stopDataAccessInterface;

@@ -1,5 +1,7 @@
-package data_access;
+package data_access.vehicle;
 
+import data_access.InvalidRequestException;
+import data_access.UmoiqApiCaller;
 import entity.Vehicle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
