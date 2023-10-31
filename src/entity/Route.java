@@ -9,7 +9,7 @@ public class Route {
 
     public Route(HashMap<Integer, Vehicle> vehicles, String routeTag) {
         this.routeTag = routeTag;
-        this.vehicles = new HashMap<>(vehicles);
+        this.vehicles = vehicles;
     }
 
     public HashMap<Integer, Vehicle> getVehicles() {
