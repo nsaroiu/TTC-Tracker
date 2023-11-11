@@ -1,4 +1,4 @@
-package interface_adapters;
+package interface_adapters.display_stops;
 //TODO: Implement me
 
 public class StopsState {

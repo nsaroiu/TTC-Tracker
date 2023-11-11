@@ -1,15 +1,19 @@
-package interface_adapters;
+package interface_adapters.route_details;
+
+import interface_adapters.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class StopsViewModel extends ViewModel{
-    private StopsState state = new StopsState();
+public class RouteDetailsViewModel extends ViewModel {
+    private RouteDetailsState state = new RouteDetailsState();
+    
 
-    public final String TITLE_LABEL = "Stops View";
-
-    public StopsViewModel(){super("stops");}
-    public void setState(StopsState state) {
+    public RouteDetailsViewModel() {
+        super("predictions");
+    }
+    
+    public void setState(RouteDetailsState state) {
         this.state = state;
     }
 
@@ -24,7 +28,7 @@ public class StopsViewModel extends ViewModel{
         support.addPropertyChangeListener(listener);
     }
 
-    public StopsState getState() {
+    public RouteDetailsState getState() {
         return state;
     }
 }

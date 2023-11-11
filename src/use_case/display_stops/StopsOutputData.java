@@ -1,4 +1,4 @@
-package use_case;
+package use_case.display_stops;
 
 import entity.Location;
 import entity.Stop;
