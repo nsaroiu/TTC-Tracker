@@ -1,6 +1,7 @@
 package data_access.route;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import data_access.*;
 import data_access.stop.StopDAO;
 import data_access.stop.StopDataAccessInterface;
@@ -78,7 +79,7 @@ public class RouteDAO implements RouteDataAccessInterface {
                     return new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
@@ -138,7 +139,7 @@ public class RouteDAO implements RouteDataAccessInterface {
                     return routes;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
@@ -172,7 +173,7 @@ public class RouteDAO implements RouteDataAccessInterface {
                 HashSet<String> routeTags = new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
                 stopTagsToRouteTags.put(nextRecord[0], routeTags);
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 

@@ -1,6 +1,7 @@
 package data_access.stop;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import data_access.*;
 import data_access.route.RouteDAO;
 import data_access.route.RouteDataAccessInterface;
@@ -119,7 +120,7 @@ public class StopDAO implements StopDataAccessInterface {
                 }
 
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
@@ -166,7 +167,7 @@ public class StopDAO implements StopDataAccessInterface {
                         routeTags
                 ));
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
@@ -203,7 +204,7 @@ public class StopDAO implements StopDataAccessInterface {
                 // Add new Stop object to HashSet
                 stopTagsAndLocations.put(stopTag, new Location(lat, lon));
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
 
