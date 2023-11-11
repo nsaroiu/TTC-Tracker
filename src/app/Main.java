@@ -1,10 +1,11 @@
 package app;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.opencsv.CSVWriter;
 import data_access.route.RouteDAO;
 import data_access.route.RouteDataAccessInterface;
 import data_access.stop.StopDAO;
 import data_access.stop.StopDataAccessInterface;
+import entity.Route;
 import entity.Stop;
 
 import java.io.*;
@@ -19,11 +20,7 @@ public class Main {
         StopDataAccessInterface stopDAO = new StopDAO();
         RouteDataAccessInterface routeDAO = new RouteDAO();
 
-        HashMap<String, HashSet<String>> stopTagsToRouteTags = routeDAO.getStopTagsToRouteTags();
-
-        for (String stopTag : stopTagsToRouteTags.keySet()) {
-            System.out.println(stopTag + ": " + stopTagsToRouteTags.get(stopTag));
-        }
+        
 
     }
 
