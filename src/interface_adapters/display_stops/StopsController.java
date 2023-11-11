@@ -1,6 +1,6 @@
-package interface_adapters;
+package interface_adapters.display_stops;
 
-import use_case.StopsInputBoundary;
+import use_case.display_stops.StopsInputBoundary;
 
 public class StopsController {
     final StopsInputBoundary stopsUseCaseInteractor;

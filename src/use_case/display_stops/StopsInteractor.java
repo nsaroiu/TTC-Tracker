@@ -1,4 +1,4 @@
-package use_case;
+package use_case.display_stops;
 
 import data_access.stop.StopDataAccessInterface;
 import entity.Location;

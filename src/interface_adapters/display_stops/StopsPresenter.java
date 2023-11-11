@@ -1,7 +1,8 @@
-package interface_adapters;
+package interface_adapters.display_stops;
 
-import use_case.StopsOutputBoundary;
-import use_case.StopsOutputData;
+import interface_adapters.ViewManagerModel;
+import use_case.display_stops.StopsOutputBoundary;
+import use_case.display_stops.StopsOutputData;
 
 public class StopsPresenter implements StopsOutputBoundary {
 
