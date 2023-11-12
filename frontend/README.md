@@ -1,1 +1,1 @@
-# Google Maps in React Crash Course
+# Frontend for the TTC-Tracker. Cloned from a react-google-maps API tutorial
