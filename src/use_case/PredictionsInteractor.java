@@ -12,6 +12,7 @@ public class PredictionsInteractor implements PredictionsInputBoundary{
 
     public PredictionsInteractor(PredictionsDataAccessInterface predictionsDataAccessInterface, PredictionsOutputBoundary predictionsPresenter){
         this.predictionsDataAccessInterface = predictionsDataAccessInterface;
+        System.out.println("Change addressed!");
         this.predictionsPresenter = predictionsPresenter;
     }
     @Override
