@@ -10,10 +10,10 @@ import java.util.HashMap;
 @Service
 public class StopsService {
     @Autowired
-    private StopDataAccessInterface stopDataAccessInterface;
+    private StopDataAccessInterface stopDataAccessObject;
 
     public HashMap<String, Location> execute() {
-        HashMap<String, Location> allStops = stopDataAccessInterface.getAllStopTagsAndLocations();
+        HashMap<String, Location> allStops = stopDataAccessObject.getAllStopTagsAndLocations();
         return allStops;
     }
 }
