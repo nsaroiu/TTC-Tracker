@@ -22,7 +22,7 @@ import java.util.List;
 @Repository
 public class StopDAO implements StopDataAccessInterface {
 
-    private final String stopCsvFilename = "src/main/java/com/example/backend/data_access/stop/stops.csv";
+    private final String stopCsvFilename = "backend/src/main/java/com/example/backend/data/stopData.csv";
 
     /** Given a route tag, returns a set of stops on that route.
      *
