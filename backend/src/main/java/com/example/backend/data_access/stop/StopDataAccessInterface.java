@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.HashSet;
 
-@Repository
 public interface StopDataAccessInterface {
 
     /** Given a route tag, returns a set of stops on that route.
