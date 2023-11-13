@@ -2,11 +2,11 @@ package com.example.backend.use_case.vehicle_locations;
 
 public class VehicleLocationsInteractor implements VehicleLocationsInputBoundary {
     final VehicleLocationsOutputBoundary outputPresenter;
-    final VehicleLocationsDataAccessInterface dataAccess;
+    final VehicleLocationsDataAccessInterface dataAccessObject;
 
     public VehicleLocationsInteractor(VehicleLocationsOutputBoundary outputPresenter, VehicleLocationsDataAccessInterface dataAccess) {
         this.outputPresenter = outputPresenter;
-        this.dataAccess = dataAccess;
+        this.dataAccessObject = dataAccess;
     }
 
     @Override

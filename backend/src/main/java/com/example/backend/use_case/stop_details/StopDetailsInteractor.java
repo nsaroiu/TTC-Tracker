@@ -2,11 +2,11 @@ package com.example.backend.use_case.stop_details;
 
 public class StopDetailsInteractor implements StopDetailsInputBoundary {
     final StopDetailsOutputBoundary outputPresenter;
-    final StopDetailsDataAccessInterface dataAccess;
+    final StopDetailsDataAccessInterface dataAccessObject;
 
     public StopDetailsInteractor(StopDetailsOutputBoundary outputPresenter, StopDetailsDataAccessInterface dataAccess) {
         this.outputPresenter = outputPresenter;
-        this.dataAccess = dataAccess;
+        this.dataAccessObject = dataAccess;
     }
 
     @Override

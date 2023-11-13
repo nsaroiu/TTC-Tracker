@@ -6,17 +6,17 @@ import com.example.backend.entity.Location;
 import java.util.HashMap;
 
 public class StopsInteractor implements StopsInputBoundary {
-    final StopDataAccessInterface stopDataAccessInterface;
+    final StopDataAccessInterface stopDataAccessObject;
     final StopsOutputBoundary stopPresenter;
     public StopsInteractor(StopDataAccessInterface stopDataAccessInterface, StopsOutputBoundary stopPresenter){
-        this.stopDataAccessInterface = stopDataAccessInterface;
+        this.stopDataAccessObject = stopDataAccessInterface;
         this.stopPresenter = stopPresenter;
 
     }
 
     @Override
     public void execute() {
-        HashMap<String, Location> allStops = stopDataAccessInterface.getAllStopTagsAndLocations();
+        HashMap<String, Location> allStops = stopDataAccessObject.getAllStopTagsAndLocations();
         if (allStops.isEmpty()){
             stopPresenter.prepareFailView("Could not fetch any stops.");
         }
