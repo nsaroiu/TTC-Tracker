@@ -12,6 +12,7 @@ import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.example.backend.entity.Stop;
 import com.example.backend.entity.Vehicle;
+import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@Repository
 public class RouteDAO implements RouteDataAccessInterface {
 
     private final String stopCsvFilename = "backend/src/main/java/com/example/backend/data/stopData.csv";
