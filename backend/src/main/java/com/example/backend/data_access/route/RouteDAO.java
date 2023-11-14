@@ -186,7 +186,10 @@ public class RouteDAO implements RouteDataAccessInterface {
         return stopTagsToRouteTags;
     }
 
-    @Override
+    /** Returns the shape (array of locations) of every TTC routes.
+     *
+     * @return HashMap mapping route tags to an array of Locations (coordinates) for the route
+     */
     public HashMap<String, ArrayList<Location>> getRouteShapes() {
         HashMap<String, ArrayList<Location>> routeShapes = new HashMap<>();
 

@@ -1,4 +1,4 @@
-,shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
+,route_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
 0,1,43.780757,-79.416009,1,0.0
 1,1,43.779716,-79.415773,2,0.1174
 2,1,43.778627,-79.415483,3,0.2407
