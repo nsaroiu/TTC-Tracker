@@ -1,6 +1,8 @@
 package com.example.backend.data_access.route;
 
+import com.example.backend.entity.Location;
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import com.example.backend.data_access.*;
 import com.example.backend.data_access.stop.StopDAO;
@@ -10,18 +12,22 @@ import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.example.backend.entity.Stop;
 import com.example.backend.entity.Vehicle;
+import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@Repository
 public class RouteDAO implements RouteDataAccessInterface {
 
-    private final String stopCsvFilename = "src/data/stopData.csv";
+    private final String stopCsvFilename = "backend/src/main/java/com/example/backend/data/stopData.csv";
+    private final String shapesCsvFilename = "backend/src/main/java/com/example/backend/data/shapes.csv";
 
     /** Returns a set of all route tags for TTC.
      *
@@ -178,6 +184,48 @@ public class RouteDAO implements RouteDataAccessInterface {
         }
 
         return stopTagsToRouteTags;
+    }
+
+    /** Returns the shape (array of locations) of every TTC routes.
+     *
+     * @return HashMap mapping route tags to an array of Locations (coordinates) for the route
+     */
+    public HashMap<String, ArrayList<Location>> getRouteShapes() {
+        HashMap<String, ArrayList<Location>> routeShapes = new HashMap<>();
+
+        // Used BufferedReader for massively improved performance
+        try (BufferedReader reader = new BufferedReader(new FileReader(shapesCsvFilename))) {
+            String line;
+            // Skip first row (headers)
+            reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                // Get the routeId, latitude and longitude from the row
+                String routeId = row[1];
+                float lat = Float.parseFloat(row[2]);
+                float lon = Float.parseFloat(row[3]);
+
+                Location location = new Location(lat, lon);
+
+                // Check if the routeId is already in the map
+                if (routeShapes.containsKey(routeId)) {
+                    // If so, add the location to the existing list (we assume the locations are ordered in the file)
+                    routeShapes.get(routeId).add(location);
+                } else {
+                    // If not, create a new list with the location
+                    ArrayList<Location> locations = new ArrayList<>();
+                    locations.add(location);
+                    routeShapes.put(routeId, locations);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return routeShapes;
+
     }
 
 }
