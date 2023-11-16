@@ -22,9 +22,12 @@ public class Main {
 
         RouteDataAccessInterface routeDAO = new RouteDAO();
 
-        Route route = routeDAO.getRouteByRouteTag("511");
+        Route route = routeDAO.getRouteByRouteTag("510");
 
-        route.getVehicles().forEach((key, value) -> System.out.println(key + " " + value.getDirectionTag()));
+        route.getRouteDirections().forEach(routeDirection -> {
+            System.out.println(routeDirection.getName());
+            System.out.println(routeDirection.getStops());
+        });
 
     }
 

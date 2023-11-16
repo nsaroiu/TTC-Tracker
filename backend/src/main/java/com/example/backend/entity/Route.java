@@ -28,4 +28,6 @@ public class Route {
     public String getRouteTag() {
         return routeTag;
     }
+
+    public ArrayList<RouteDirection> getRouteDirections() { return routeDirections; }
 }

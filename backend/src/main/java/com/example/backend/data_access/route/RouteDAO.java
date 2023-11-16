@@ -204,7 +204,7 @@ public class RouteDAO implements RouteDataAccessInterface {
                 ArrayList<String> stopTags = new ArrayList<>();
 
                 for (int j = 0; j < stopNodeList.getLength(); j++) {
-                    Element stopElement = (Element) stopNodeList.item(i);
+                    Element stopElement = (Element) stopNodeList.item(j);
                     stopTags.add(stopElement.getAttribute("tag").split("_")[0]);
                 }
 
