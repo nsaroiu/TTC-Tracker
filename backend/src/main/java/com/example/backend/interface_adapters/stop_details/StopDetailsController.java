@@ -21,7 +21,8 @@ public class StopDetailsController {
 
 
     @GetMapping("/stops")
-    public StopDetailsOutputData execute(StopDetailsInputData inputData) throws Exception {
+    public StopDetailsOutputData execute(String stopTag) throws Exception {
+        StopDetailsInputData inputData = new StopDetailsInputData(stopTag);
         return stopDetailsService.execute(inputData);
     }
 }
