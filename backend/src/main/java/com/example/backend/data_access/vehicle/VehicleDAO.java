@@ -35,8 +35,9 @@ public class VehicleDAO implements VehicleDataAccessInterface {
                         Integer.parseInt(element.getAttribute("speedKmHr")),
                         Float.parseFloat(element.getAttribute("lat")),
                         Float.parseFloat(element.getAttribute("lon")),
-                        Integer.parseInt(element.getAttribute("heading")
-                        )));
+                        Integer.parseInt(element.getAttribute("heading")),
+                        element.getAttribute("dirTag")
+                ));
             }
 
             return vehicles;
