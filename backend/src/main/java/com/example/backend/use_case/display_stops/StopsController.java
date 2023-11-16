@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-
+ 
 @RestController
 @CrossOrigin(origins = "*")
 public class StopsController {
     @Autowired
-    private StopsService stopsService;
+    private StopsImplementation stopsService;
 
     @GetMapping("/stops")
     public HashMap<String, Location>  execute() {
