@@ -1,5 +1,5 @@
 import { useLoadScript } from "@react-google-maps/api";
-import Map from "../components/map";
+import Map from "../view/map";
 import {Libraries} from "@react-google-maps/api/src/utils/make-load-script-url";
 
 const libraries: Libraries = ["places"];

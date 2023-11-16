@@ -1,7 +1,8 @@
-import React from 'react';
-import data from "@react-google-maps/api/src/components/drawing/Data";
+import {useCallback} from "react";
+import {Stops} from "./StopsData";
 
-const Stops = ({onData}: any) => {
+type LatLngLiteral = google.maps.LatLngLiteral;
+const StopsController = () => {
     const fetchData = async () => {
         try {
             const response = await fetch('http://localhost:8080/stops'); // Replace with your API endpoint
@@ -9,8 +10,7 @@ const Stops = ({onData}: any) => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
-            return data;
+            return await response.json();
             // Do something with the data, e.g., update state, show in UI, etc.
         } catch (error: any) {
             console.error('Error fetching data:', error.message);
@@ -18,27 +18,19 @@ const Stops = ({onData}: any) => {
         }
     };
 
-    const sendDataToParent = async () => {
+    const getStops = useCallback(async (): Promise<Stops|undefined> => {
         try {
             // Wait for the fetchData promise to resolve
-            const data = await fetchData();
-
-            // Call the function passed from the parent, and pass data as an argument
-            onData(data);
+            return await fetchData();
         } catch (error: any) {
             // Handle errors if the fetchData promise is rejected
             console.error('Error fetching data:', error.message);
         }
-    };
+    }, []);
 
-
-
-    return (
-        <button onClick={sendDataToParent}>
-            Click to Fetch Data
-        </button>
-    );
-
+    return {
+        getStops
+    }
 }
 
-export default Stops;
+export default StopsController;
