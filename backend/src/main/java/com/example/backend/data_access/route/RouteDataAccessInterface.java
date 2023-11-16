@@ -22,13 +22,6 @@ public interface RouteDataAccessInterface {
      */
     HashSet<String> getRouteTagsByStopTag(String stopTag);
 
-    /** Given a stop tag, return a set of all routes that pass through the given stop.
-     *
-     * @param tag String representing stop tag
-     * @return HashSet of Route objects that pass through the stop
-     */
-    HashSet<Route> getRoutesByStopTag(String tag);
-
     /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
      *
      * @return HashMap mapping stop tags to a set of route tags for TTC
@@ -41,5 +34,12 @@ public interface RouteDataAccessInterface {
      * @return HashMap mapping route tags to an array of Locations (coordinates) for the route
      */
     HashMap<String, ArrayList<Location>> getRouteShapes();
+
+    /** Returns a Route object for the given route tag.
+     *
+     * @return Route object for the given route tag
+     * @see Route
+     */
+    Route getRouteByRouteTag(String routeTag);
 
 }
