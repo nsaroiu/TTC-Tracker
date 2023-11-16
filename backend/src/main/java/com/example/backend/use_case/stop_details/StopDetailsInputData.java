@@ -13,8 +13,4 @@ public class StopDetailsInputData {
     public String getStopTag() {
         return this.stopTag;
     }
-
-    public void setStopId(String newStopTag) {
-        this.stopTag = newStopTag;
-    }
 }
