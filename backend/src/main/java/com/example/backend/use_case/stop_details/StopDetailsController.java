@@ -1,4 +1,4 @@
-package com.example.backend.interface_adapters.stop_details;
+package com.example.backend.use_case.stop_details;
 
 import com.example.backend.entity.Route;
 import com.example.backend.use_case.stop_details.StopDetailsInputBoundary;
