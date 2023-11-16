@@ -13,15 +13,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+@Service
 public class StopDetailsService {
-
-    private StopDataAccessInterface stopDataAccessObject;
+@Autowired
     private RouteDataAccessInterface routeDataAccessObject;
+    //private StopDataAccessInterface stopDataAccessObject;
 
-    public StopDetailsService(StopDataAccessInterface stopDataAccessObject, RouteDataAccessInterface routeDataAccessObject){
-        this.stopDataAccessObject = stopDataAccessObject;
-        this.routeDataAccessObject = routeDataAccessObject;
-    }
+//    public StopDetailsService(StopDataAccessInterface stopDataAccessObject, RouteDataAccessInterface routeDataAccessObject){
+//        this.stopDataAccessObject = stopDataAccessObject;
+//        this.routeDataAccessObject = routeDataAccessObject;
+//    }
 
     public StopDetailsOutputData execute(StopDetailsInputData inputData) throws Exception {
         //Extract the stop tag
@@ -33,7 +34,7 @@ public class StopDetailsService {
         HashSet<String> routeTags = routeDataAccessObject.getRouteTagsByStopTag(stopTag);
         //Get a mapping of routeTags to shapes
         HashMap<String, ArrayList<Location>> routeToShapes = routeDataAccessObject.getRouteShapes();
-        //Start accumulating the Hashmap.
+        //Start accumulating the Hashmap
         //Wrapper contains the shape and routeTag
         HashMap<Route,ArrayList<Object>> routeToWrapper = new HashMap<>();
         for (String routeTag : routeTags){

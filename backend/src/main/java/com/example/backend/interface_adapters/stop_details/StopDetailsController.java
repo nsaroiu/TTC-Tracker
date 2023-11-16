@@ -8,22 +8,23 @@ import com.example.backend.use_case.stop_details.StopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-
+@RestController
 public class StopDetailsController {
-
+@Autowired
     private StopDetailsService stopDetailsService;
 
-    public StopDetailsController(StopDetailsService stopDetailsService){
-        this.stopDetailsService = stopDetailsService;
-    }
+//    public StopDetailsController(StopDetailsService stopDetailsService){
+//        this.stopDetailsService = stopDetailsService;
+//    }
 
 
-
+    @PostMapping
     public StopDetailsOutputData execute(String stopTag) throws Exception {
         StopDetailsInputData inputData = new StopDetailsInputData(stopTag);
         return stopDetailsService.execute(inputData);
