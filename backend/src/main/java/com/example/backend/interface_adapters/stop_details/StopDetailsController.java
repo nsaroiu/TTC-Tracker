@@ -1,15 +1,27 @@
 package com.example.backend.interface_adapters.stop_details;
 
+import com.example.backend.entity.Route;
 import com.example.backend.use_case.stop_details.StopDetailsInputBoundary;
 import com.example.backend.use_case.stop_details.StopDetailsInputData;
+import com.example.backend.use_case.stop_details.StopDetailsOutputData;
+import com.example.backend.use_case.stop_details.StopDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+@RestController
+@CrossOrigin(origins = "*")
 public class StopDetailsController {
-    final StopDetailsInputBoundary stopDetailsUseCaseInteractor;
-    public StopDetailsController(StopDetailsInputBoundary stopDetailsUseCaseInteractor) {
-        this.stopDetailsUseCaseInteractor = stopDetailsUseCaseInteractor;
-    }
+    @Autowired
+    private StopDetailsService stopDetailsService;
 
-    public void execute() {
-        stopDetailsUseCaseInteractor.execute(new StopDetailsInputData());
+
+    @GetMapping("/stops")
+    public StopDetailsOutputData execute(StopDetailsInputData inputData) throws Exception {
+        return stopDetailsService.execute(inputData);
     }
 }

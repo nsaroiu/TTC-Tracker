@@ -1,7 +1,14 @@
 package com.example.backend.use_case.stop_details;
 
-public class StopDetailsOutputData {
+import com.example.backend.entity.Route;
 
-    public StopDetailsOutputData() {
+import java.util.HashSet;
+
+public class StopDetailsOutputData {
+    private String stopName;
+    private HashSet<String> routes;
+    public StopDetailsOutputData(String stopName, HashSet<String> routes) {
+        this.stopName = stopName;
+        this.routes = routes;
     }
 }

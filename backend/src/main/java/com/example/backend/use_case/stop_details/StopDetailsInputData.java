@@ -1,7 +1,16 @@
 package com.example.backend.use_case.stop_details;
 
-public class StopDetailsInputData {
+import org.springframework.stereotype.Component;
 
-    public StopDetailsInputData() {
+@Component
+public class StopDetailsInputData {
+    private String stopTag;
+
+    public String getStopTag() {
+        return this.stopTag;
+    }
+
+    public void setStopId(String newStopTag) {
+        this.stopTag = newStopTag;
     }
 }
