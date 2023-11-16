@@ -2,15 +2,11 @@ package com.example.backend.data_access.stop;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import com.example.backend.data_access.*;
 import com.example.backend.data_access.route.RouteDAO;
 import com.example.backend.data_access.route.RouteDataAccessInterface;
 import com.example.backend.entity.Location;
 import com.example.backend.entity.Stop;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,29 +27,39 @@ public class StopDAO implements StopDataAccessInterface {
      */
     public HashSet<String> getStopTagsByRouteTag(String routeTag) {
 
+        // Initialize CSV reader for Stop data
+        FileReader filereader = null;
         try {
-            String[][] params = {{"command", "routeConfig"}, {"r", routeTag}};
-            Document doc = UmoiqApiCaller.getRequest(params);
-
-            NodeList nodeList = doc.getElementsByTagName("stop");
-
-            // Initialize HashSet to store stop tags
-            HashSet<String> stopTags = new HashSet<>();
-
-            // For each route in the nodeList, add each stop tag to the HashSet
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Element element = (Element) nodeList.item(i);
-
-                stopTags.add(element.getAttribute("tag").split("_")[0]);
-            }
-
-            return stopTags;
-
-        } catch (NullPointerException | InvalidRequestException e) {
+            filereader = new FileReader(stopCsvFilename);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        assert filereader != null; // If this fails, the filename needs to be fixed
+        CSVReader csvReader = new CSVReader(filereader);
 
-        return null;
+        HashSet<String> stopTags = new HashSet<>();
+
+        try {
+            String[] nextRecord = csvReader.readNext();
+
+            // For each entry in csv, iterate over all routes in the entry
+            while ((nextRecord = csvReader.readNext()) != null) {
+
+                String stopTag = nextRecord[0];
+                String[] csvRouteTags = nextRecord[4].split(",");
+
+                // If the route tag is in the list of routes for the stop, add the stop tag to the list
+                if (List.of(csvRouteTags).contains(routeTag)) {
+                    stopTags.add(stopTag);
+                }
+
+            }
+
+        } catch (IOException | CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return stopTags;
 
     }
 

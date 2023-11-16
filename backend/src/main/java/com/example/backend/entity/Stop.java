@@ -26,7 +26,7 @@ public class Stop {
 
     public Location getLocation() { return location; }
 
-    public HashSet<String> getRoutes() {
+    public HashSet<String> getRouteTags() {
         return routeTags;
     }
 }

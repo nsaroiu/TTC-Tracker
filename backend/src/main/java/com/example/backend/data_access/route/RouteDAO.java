@@ -221,11 +221,16 @@ public class RouteDAO implements RouteDataAccessInterface {
             e.printStackTrace();
         }
 
+        HashMap<String, RouteDirection> routeDirectionMap = new HashMap<>();
+        for (RouteDirection routeDirection : routeDirections) {
+            routeDirectionMap.put(routeDirection.getDirTag(), routeDirection);
+        }
+
         return new Route(
                 vehicleMap,
                 stopMap,
                 tag,
-                routeDirections
+                routeDirectionMap
         );
 
     }
