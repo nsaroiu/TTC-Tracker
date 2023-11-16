@@ -1,7 +1,6 @@
 package com.example.backend.entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class RouteDirection {
 
