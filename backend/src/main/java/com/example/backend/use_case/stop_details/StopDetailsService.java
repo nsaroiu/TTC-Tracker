@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-@Service
 public class StopDetailsService {
-    @Autowired
+
     private StopDataAccessInterface stopDataAccessObject;
+
+    public StopDetailsService(StopDataAccessInterface stopDataAccessObject){
+        this.stopDataAccessObject = stopDataAccessObject;
+    }
 
     public StopDetailsOutputData execute(StopDetailsInputData inputData) throws Exception {
         String stopTag = inputData.getStopTag();

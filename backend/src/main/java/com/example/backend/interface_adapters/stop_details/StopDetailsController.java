@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-@RestController
-@CrossOrigin(origins = "*")
+
 public class StopDetailsController {
-    @Autowired
+
     private StopDetailsService stopDetailsService;
 
+    public StopDetailsController(StopDetailsService stopDetailsService){
+        this.stopDetailsService = stopDetailsService;
+    }
 
-    @GetMapping("/stops")
+
+
     public StopDetailsOutputData execute(String stopTag) throws Exception {
         StopDetailsInputData inputData = new StopDetailsInputData(stopTag);
         return stopDetailsService.execute(inputData);

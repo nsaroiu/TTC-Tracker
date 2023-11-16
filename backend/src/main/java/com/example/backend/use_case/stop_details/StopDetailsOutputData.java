@@ -11,4 +11,7 @@ public class StopDetailsOutputData {
         this.stopName = stopName;
         this.routes = routes;
     }
+
+    public String getName(){return this.stopName;}
+    public HashSet<String> getRoutes(){return this.routes;}
 }
