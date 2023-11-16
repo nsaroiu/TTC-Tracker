@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Route {
@@ -7,11 +8,13 @@ public class Route {
     HashMap<Integer, Vehicle> vehicles;
     HashMap<String, Stop> stops;
     String routeTag;
+    ArrayList<RouteDirection> routeDirections;
 
-    public Route(HashMap<Integer, Vehicle> vehicles, HashMap<String, Stop> stops, String routeTag) {
+    public Route(HashMap<Integer, Vehicle> vehicles, HashMap<String, Stop> stops, String routeTag, ArrayList<RouteDirection> routeDirections) {
         this.routeTag = routeTag;
         this.stops = stops;
         this.vehicles = vehicles;
+        this.routeDirections = routeDirections;
     }
 
     public HashMap<Integer, Vehicle> getVehicles() {

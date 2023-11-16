@@ -1,17 +1,13 @@
 package com.example.backend.data_access.route;
 
-import com.example.backend.entity.Location;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
-import com.example.backend.data_access.*;
 import com.example.backend.data_access.stop.StopDAO;
 import com.example.backend.data_access.stop.StopDataAccessInterface;
+import com.example.backend.entity.*;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import com.example.backend.data_access.*;
 import com.example.backend.data_access.vehicle.VehicleDAO;
 import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
-import com.example.backend.entity.Route;
-import com.example.backend.entity.Stop;
-import com.example.backend.entity.Vehicle;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,66 +79,6 @@ public class RouteDAO implements RouteDataAccessInterface {
             while ((nextRecord = csvReader.readNext()) != null) {
                 if (nextRecord[0].equals(stopTag)) {
                     return new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
-                }
-            }
-        } catch (IOException | CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-
-        return null;
-    }
-
-    /** Given a stop tag, return a set of all routes that pass through the given stop.
-     *
-     * @param tag String representing stop tag
-     * @return HashSet of Route objects that pass through the stop
-     */
-    public HashSet<Route> getRoutesByStopTag(String tag) {
-
-        StopDataAccessInterface stopDAO = new StopDAO();
-
-        // Initialize CSV reader for Stop data
-        FileReader filereader = null;
-        try {
-            filereader = new FileReader(stopCsvFilename);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert filereader != null; // If this fails, the filename needs to be fixed
-        CSVReader csvReader = new CSVReader(filereader);
-
-        // Initialize ArrayList to store routes
-        HashSet<Route> routes = new HashSet<>();
-
-        try {
-            String[] nextRecord = csvReader.readNext();
-
-            while ((nextRecord = csvReader.readNext()) != null) {
-                if (nextRecord[0].equals(tag)) {
-                    String[] routeTags = nextRecord[3].split(",");
-                    for (String routeTag : routeTags) {
-                        // Generate Map of vehicle ids to vehicles
-                        HashMap<Integer, Vehicle> vehicles = new HashMap<>();
-                        VehicleDataAccessInterface vehicleDAO = new VehicleDAO();
-                        for (Vehicle vehicle : vehicleDAO.getVehiclesByRouteTag(routeTag)) {
-                            vehicles.put(vehicle.getId(), vehicle);
-                        }
-
-                        // Create Map of Stops for Route
-                        HashSet<Stop> stops = stopDAO.getStopsByRouteTag(routeTag);
-                        HashMap<String, Stop> stopMap= new HashMap<>();
-                        for (Stop stop : stops) {
-                            stopMap.put(stop.getTag(), stop);
-                        }
-
-                        // Add new Route object to ArrayList
-                        routes.add(new Route(
-                                vehicles,
-                                stopMap,
-                                routeTag));
-                    }
-
-                    return routes;
                 }
             }
         } catch (IOException | CsvValidationException e) {
@@ -227,5 +163,72 @@ public class RouteDAO implements RouteDataAccessInterface {
         return routeShapes;
 
     }
+
+    /** Returns a Route object for the given route tag.
+     *
+     * @return Route object for the given route tag
+     * @see Route
+     */
+    public Route getRouteByRouteTag(String tag) {
+
+        // Create Vehicle Map of vehicles serving the route
+        VehicleDataAccessInterface vehicleDAO = new VehicleDAO();
+        ArrayList<Vehicle> vehicles = vehicleDAO.getVehiclesByRouteTag(tag);
+        HashMap<Integer, Vehicle> vehicleMap = new HashMap<>();
+        for (Vehicle vehicle : vehicles) {
+            vehicleMap.put(vehicle.getId(), vehicle);
+        }
+
+        // Create Stop Map of stops serving the route
+        StopDataAccessInterface stopDAO = new StopDAO();
+        HashSet<Stop> stopSet = stopDAO.getStopsByRouteTag(tag);
+        HashMap<String, Stop> stopMap = new HashMap<>();
+        for (Stop stop : stopSet) {
+            stopMap.put(stop.getTag(), stop);
+        }
+
+        // Create RouteDirection ArrayList of directions for the route
+        ArrayList<RouteDirection> routeDirections = new ArrayList<>();
+
+        try {
+            String[][] params = {{"command", "routeConfig"}, {"r", tag}};
+            Document doc = UmoiqApiCaller.getRequest(params);
+
+            NodeList directionNodeList = doc.getElementsByTagName("direction");
+
+            // Add each direction to the ArrayList
+            for (int i = 0; i < directionNodeList.getLength(); i++) {
+                Element element = (Element) directionNodeList.item(i);
+
+                NodeList stopNodeList = element.getElementsByTagName("stop");
+                ArrayList<String> stopTags = new ArrayList<>();
+
+                for (int j = 0; j < stopNodeList.getLength(); j++) {
+                    Element stopElement = (Element) stopNodeList.item(i);
+                    stopTags.add(stopElement.getAttribute("tag").split("_")[0]);
+                }
+
+                RouteDirection routeDirection = new RouteDirection(
+                        stopTags,
+                        element.getAttribute("tag"),
+                        element.getAttribute("title")
+                );
+
+                routeDirections.add(routeDirection);
+            }
+
+        } catch (NullPointerException | InvalidRequestException e) {
+            e.printStackTrace();
+        }
+
+        return new Route(
+                vehicleMap,
+                stopMap,
+                tag,
+                routeDirections
+        );
+
+    }
+
 
 }
