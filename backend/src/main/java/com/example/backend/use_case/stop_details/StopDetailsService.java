@@ -1,21 +1,21 @@
 package com.example.backend.use_case.stop_details;
 
 import com.example.backend.data_access.route.RouteDataAccessInterface;
-import com.example.backend.data_access.stop.StopDataAccessInterface;
-import com.example.backend.entity.Location;
-import com.example.backend.entity.Route;
-import com.example.backend.entity.Stop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
+/**
+ * This is the service class for the stop details use case.
+ */
 @Service
 public class StopDetailsService {
-@Autowired
+    /**
+     * Instance variables:
+    *  - routeDataAccessObject: the data access object used to access data about routes (such as routeTags)
+    */
+    @Autowired
     private RouteDataAccessInterface routeDataAccessObject;
     //private StopDataAccessInterface stopDataAccessObject;
 
@@ -24,34 +24,21 @@ public class StopDetailsService {
 //        this.routeDataAccessObject = routeDataAccessObject;
 //    }
 
-    public StopDetailsOutputData execute(StopDetailsInputData inputData) throws Exception {
+    /**
+     * Given an input data, extracts the stopTag and fetches the name of the corresponding stop.
+     * Finds the route tags of all the routes that pass through the stop and puts them into a set called routeTags.
+     * Creates the output data containing the stopName and the routeTags, and returns it.
+     */
+    public StopDetailsOutputData execute(StopDetailsInputData inputData){
         //Extract the stop tag
         String stopTag = inputData.getStopTag();
         //TODO: Replace this part with the actual name once names for Stops are implemented.
-        //TODO: Introduce a way to get one stop by all stops while doing that
+        //TODO: Introduce a way to get one stop from all stops while doing that
         String stopName = stopTag;
-        //Use the stop tag to get the tags for all its routes
+        //Use the stopTag to get the routeTags
         HashSet<String> routeTags = routeDataAccessObject.getRouteTagsByStopTag(stopTag);
-        //Get a mapping of routeTags to shapes
-        HashMap<String, ArrayList<Location>> routeToShapes = routeDataAccessObject.getRouteShapes();
-        //Start accumulating the Hashmap
-        //Wrapper contains the shape and routeTag
-        HashMap<Route,ArrayList<Object>> routeToWrapper = new HashMap<>();
-        for (String routeTag : routeTags){
-            //Get each route by routeTag
-            Route route = routeDataAccessObject.getRouteByRouteTag(routeTag);
-            //Get each shape by routeTag
-            ArrayList<Location> shape = routeToShapes.get(routeTag);
-            //Wrap the shape and the routeTag
-            ArrayList<Object> wrapper = new ArrayList();
-            wrapper.add(shape);
-            wrapper.add(routeTag);
-            //Add mapping from Route to wrapper (shape and routeTag)
-            routeToWrapper.put(route,wrapper);
-        }
-
-        //Initialize new outputData with the stopName and the route
-        StopDetailsOutputData outputData = new StopDetailsOutputData(stopName, routeToWrapper);
+        //Initialize new outputData with the stopName and the routeTags
+        StopDetailsOutputData outputData = new StopDetailsOutputData(stopName, routeTags);
         //Return the outputData
         return outputData;
     }

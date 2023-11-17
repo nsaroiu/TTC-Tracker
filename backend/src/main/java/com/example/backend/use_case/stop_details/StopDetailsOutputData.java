@@ -1,31 +1,30 @@
 package com.example.backend.use_case.stop_details;
 
-import com.example.backend.entity.Route;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-
+/**
+ * This is the output data class for the stop details use case.
+ */
 public class StopDetailsOutputData {
     /**
-     * stopname: the name of the stop
+     * Instance variables:
+     * - stopName: the name of the stop
+     * - routeTags: a set of all the routeTags of routes going through this stop
      */
     private String stopName;
-    /*
-     * routes: maps routes to a list containing route shape and route tag
-     * */
-    private HashMap<Route, ArrayList<Object>> routes;
-    public StopDetailsOutputData(String stopName, HashMap<Route, ArrayList<Object>> routes) {
+    private HashSet<String> routeTags;
+    /**
+     * Creates a new instance of StopDetailsOutputData
+     */
+    public StopDetailsOutputData(String stopName, HashSet<String> routeTags) {
         this.stopName = stopName;
-        this.routes = routes;
+        this.routeTags = routeTags;
     }
-/**
- * Returns the stopName
- * */
+    /**
+    * Returns the stopName
+    */
     public String getName(){return this.stopName;}
     /**
-     * Returns the Routes mapped to their Shapes and RouteTags.
-     * */
-    public HashMap<Route, ArrayList<Object>> getRoutes(){return this.routes;}
+     * Returns the routeTags
+     */
+    public HashSet<String> getRouteTags(){return this.routeTags;}
 }

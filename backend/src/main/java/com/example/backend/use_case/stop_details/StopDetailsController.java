@@ -1,31 +1,32 @@
 package com.example.backend.use_case.stop_details;
 
-import com.example.backend.entity.Route;
-import com.example.backend.use_case.stop_details.StopDetailsInputBoundary;
-import com.example.backend.use_case.stop_details.StopDetailsInputData;
-import com.example.backend.use_case.stop_details.StopDetailsOutputData;
-import com.example.backend.use_case.stop_details.StopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+/**
+ * This is the controller for the stop details use case.
+ */
 @RestController
 public class StopDetailsController {
-@Autowired
+    /**
+    *  Instance variables:
+    *  - stopDetailsService: The service for this controller
+    */
+    @Autowired
     private StopDetailsService stopDetailsService;
 
 //    public StopDetailsController(StopDetailsService stopDetailsService){
 //        this.stopDetailsService = stopDetailsService;
 //    }
 
-
-    @PostMapping
-    public StopDetailsOutputData execute(String stopTag) throws Exception {
+    /**
+     * Given a stopTag, creates the input data and executes the service with it.
+     */
+    @PostMapping("/stopdetails")
+    public StopDetailsOutputData execute(@RequestParam String stopTag){
         StopDetailsInputData inputData = new StopDetailsInputData(stopTag);
         return stopDetailsService.execute(inputData);
     }
