@@ -3,7 +3,7 @@ import {
     GoogleMap,
 } from "@react-google-maps/api";
 
-import {StopsData} from "../interface_adapter/display_stops/StopsData";
+import {DisplayStopsData} from "../interface_adapter/display_stops/StopsData";
 
 import StopsController from "../interface_adapter/display_stops/StopsController";
 import Stops from "./stops";
@@ -19,8 +19,8 @@ export default function Map() {
     );
     const [mapZoom, setZoom] = useState<number>(10);
     const {getStops} = StopsController();
-    const [stops, setStops] = useState<StopsData>();
-    const [visibleStops, setVisibleStops] = useState<Array<LatLngLiteral>>([]);
+    const [stops, setStops] = useState<DisplayStopsData>();
+    const [visibleStops, setVisibleStops] = useState<DisplayStopsData>({});
     useEffect(() => {
         const updateVisibleStops = () => {
             if (mapRef.current) {
@@ -30,7 +30,7 @@ export default function Map() {
                     setZoom(newZoom);
                 }
                 console.log(bounds, newZoom)
-                let filteredStops: StopsData = {};
+                let filteredStops: DisplayStopsData = {};
                 if (newZoom) {
                     if (newZoom >= 14.5) {
                         filteredStops = Object.keys(stops || {}).reduce((acc, key) => {
@@ -38,20 +38,15 @@ export default function Map() {
                                 return acc;
                             }
                             const stop = stops[key];
-                            if (bounds && bounds.contains({lat: stop.latitude, lng: stop.longitude})) {
+                            if (bounds && bounds.contains({lat: stop.lat, lng: stop.lng})) {
                                 acc[key] = stop;
                             }
                             return acc;
-                        }, {} as StopsData);
+                        }, {} as DisplayStopsData);
                     }
                     console.log(filteredStops);
 
-                    const LatLngFilteredStops: LatLngLiteral[] = Object.keys(filteredStops).map((key) => ({
-                        lat: filteredStops[key].latitude,
-                        lng: filteredStops[key].longitude,
-                    }));
-
-                    setVisibleStops(LatLngFilteredStops);
+                    setVisibleStops(filteredStops)
                 }
             }
         };
