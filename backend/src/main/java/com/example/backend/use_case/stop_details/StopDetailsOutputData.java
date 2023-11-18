@@ -12,6 +12,7 @@ public class StopDetailsOutputData {
      */
     private String stopName;
     private HashSet<String> routeTags;
+    //private HashMap<String, ArrayList<>>?
     /**
      * Creates a new instance of StopDetailsOutputData
      */
