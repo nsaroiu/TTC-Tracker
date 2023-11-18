@@ -15,7 +15,7 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom }) => {
             {visibleStops && Object.keys(visibleStops).length > 0 && (
                 mapZoom && mapZoom >= 17 ? (
                     // Display individual markers if zoom is greater than or equal to 16
-                    Object.keys(visibleStops).map((key, index) => (
+                    Object.keys(visibleStops).map((key: string) => (
                         <Marker
                             key={key}
                             position={{ lat: visibleStops[key].lat, lng: visibleStops[key].lng }}
