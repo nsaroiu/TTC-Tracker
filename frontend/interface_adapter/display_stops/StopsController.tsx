@@ -1,7 +1,6 @@
 import {useCallback} from "react";
 import {StopsData} from "./StopsData";
 
-type LatLngLiteral = google.maps.LatLngLiteral;
 const StopsController = () => {
     const fetchData = async () => {
         try {
