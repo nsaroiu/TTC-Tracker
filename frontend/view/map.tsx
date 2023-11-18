@@ -1,10 +1,6 @@
 import React, {useState, useMemo, useCallback, useRef, useEffect} from "react";
 import {
     GoogleMap,
-    Marker,
-    DirectionsRenderer,
-    Circle,
-    MarkerClusterer,
 } from "@react-google-maps/api";
 
 import {StopsData} from "../interface_adapter/display_stops/StopsData";
@@ -13,7 +9,6 @@ import StopsController from "../interface_adapter/display_stops/StopsController"
 import Stops from "./stops";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
-type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions
 
 export default function Map() {
@@ -48,8 +43,6 @@ export default function Map() {
                             }
                             return acc;
                         }, {} as StopsData);
-                    } else {
-                        // Handle the case when zoom is less than 14.5
                     }
                     console.log(filteredStops);
 
