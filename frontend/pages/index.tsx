@@ -1,5 +1,5 @@
 import { useLoadScript } from "@react-google-maps/api";
-import Map from "../view/map";
+import HomePage from "./HomePage";
 import {Libraries} from "@react-google-maps/api/src/utils/make-load-script-url";
 
 const libraries: Libraries = ["places"];
@@ -11,5 +11,5 @@ export default function Home() {
   });
 
   if (!isLoaded) return <div>Loading...</div>;
-  return <Map />;
+  return <HomePage />;
 }
