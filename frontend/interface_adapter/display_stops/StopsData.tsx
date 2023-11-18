@@ -6,3 +6,7 @@ export type StopsData = {
         longitude: number;
     }
 }
+
+export type DisplayStopsData = {
+    [index: string]: LatLngLiteral;
+}
