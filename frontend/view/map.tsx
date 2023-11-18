@@ -7,9 +7,10 @@ import {
     MarkerClusterer,
 } from "@react-google-maps/api";
 
-import {Stops} from "../interface_adapter/display_stops/StopsData";
+import {StopsData} from "../interface_adapter/display_stops/StopsData";
 
 import StopsController from "../interface_adapter/display_stops/StopsController";
+import Stops from "./stops";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
@@ -23,7 +24,7 @@ export default function Map() {
     );
     const [mapZoom, setZoom] = useState<number>(10);
     const {getStops} = StopsController();
-    const [stops, setStops] = useState<Stops>();
+    const [stops, setStops] = useState<StopsData>();
     const [visibleStops, setVisibleStops] = useState<Array<LatLngLiteral>>([]);
     useEffect(() => {
         const updateVisibleStops = () => {
@@ -34,7 +35,7 @@ export default function Map() {
                     setZoom(newZoom);
                 }
                 console.log(bounds, newZoom)
-                let filteredStops: Stops = {};
+                let filteredStops: StopsData = {};
                 if (newZoom) {
                     if (newZoom >= 14.5) {
                         filteredStops = Object.keys(stops || {}).reduce((acc, key) => {
@@ -46,7 +47,7 @@ export default function Map() {
                                 acc[key] = stop;
                             }
                             return acc;
-                        }, {} as Stops);
+                        }, {} as StopsData);
                     } else {
                         // Handle the case when zoom is less than 14.5
                     }
@@ -117,32 +118,7 @@ export default function Map() {
                     options={options}
                     onLoad={onLoad}
                 >
-                    {visibleStops.length > 0 && (
-                        mapZoom && mapZoom >= 17 ? (
-                            // Display individual markers if zoom is greater than or equal to 16
-                            visibleStops.map((stop, index) => (
-                                <Marker
-                                    key={index}
-                                    position={stop}
-                                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                                />
-                            ))
-                        ) : (
-                            // Use marker clustering if zoom is less than 16
-                            <MarkerClusterer>
-                                {(clusterer) =>
-                                    visibleStops.map((stop, index) => (
-                                        <Marker
-                                            key={index}
-                                            position={stop}
-                                            icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                                            clusterer={clusterer}
-                                        />
-                                    ))
-                                }
-                            </MarkerClusterer>
-                        )
-                    )}
+                    <Stops visibleStops={visibleStops} mapZoom={mapZoom}/>
 
 
                 </GoogleMap>
