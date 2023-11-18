@@ -1,6 +1,8 @@
 package com.example.backend.use_case.stop_details;
 
 import com.example.backend.data_access.route.RouteDataAccessInterface;
+import com.example.backend.data_access.stop.StopDataAccessInterface;
+import com.example.backend.entity.Stop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,8 @@ public class StopDetailsService {
     */
     @Autowired
     private RouteDataAccessInterface routeDataAccessObject;
-    //private StopDataAccessInterface stopDataAccessObject;
+    @Autowired
+    private StopDataAccessInterface stopDataAccessObject;
 
 //    public StopDetailsService(StopDataAccessInterface stopDataAccessObject, RouteDataAccessInterface routeDataAccessObject){
 //        this.stopDataAccessObject = stopDataAccessObject;
@@ -34,7 +37,16 @@ public class StopDetailsService {
         String stopTag = inputData.getStopTag();
         //TODO: Replace this part with the actual name once names for Stops are implemented.
         //TODO: Introduce a way to get one stop from all stops while doing that
-        String stopName = stopTag;
+        HashSet<Stop> allStops = stopDataAccessObject.getAllStops();
+        String stopName = "Empty";
+        for (Stop stop : allStops){
+            if (stopTag.equals(stop.getTag())){
+                stopName = stop.getName();
+            }
+        }
+        if (stopName.equals("Empty")){
+            stopName = stopTag;
+        }
         //Use the stopTag to get the routeTags
         HashSet<String> routeTags = routeDataAccessObject.getRouteTagsByStopTag(stopTag);
         //Initialize new outputData with the stopName and the routeTags
