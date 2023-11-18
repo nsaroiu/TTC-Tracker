@@ -35,15 +35,17 @@ public class StopDetailsService {
     public StopDetailsOutputData execute(StopDetailsInputData inputData){
         //Extract the stop tag
         String stopTag = inputData.getStopTag();
-        //TODO: Replace this part with the actual name once names for Stops are implemented.
-        //TODO: Introduce a way to get one stop from all stops while doing that
+        //Get a set of all stops
         HashSet<Stop> allStops = stopDataAccessObject.getAllStops();
+        //Initialize the stop name
         String stopName = "Empty";
-        for (Stop stop : allStops){
+        for (Stop stop : allStops){ // Check each stop
+            // If the stop tags match, get the name
             if (stopTag.equals(stop.getTag())){
                 stopName = stop.getName();
             }
         }
+        // If still empty, make the stopTag the name (this will never be satisfied, but is included to be safe)
         if (stopName.equals("Empty")){
             stopName = stopTag;
         }
