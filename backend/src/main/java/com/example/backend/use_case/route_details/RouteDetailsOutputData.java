@@ -18,4 +18,19 @@ public class RouteDetailsOutputData {
         this.shape = shape;
     }
 
+    public ArrayList<Location> getShape() {
+        return shape;
+    }
+
+    public String getRouteTag() {
+        return routeTag;
+    }
+
+    public String getDirTag() {
+        return dirTag;
+    }
+
+    public String getDirName() {
+        return dirName;
+    }
 }

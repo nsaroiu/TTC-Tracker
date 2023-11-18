@@ -2,6 +2,7 @@ package com.example.backend.use_case.route_details;
 
 import com.example.backend.data_access.route.RouteDataAccessInterface;
 import com.example.backend.entity.Route;
+import com.example.backend.entity.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +25,16 @@ public class RouteDetailsImplementation implements RouteDetailsService {
             return null;
         }
 
-        String dirName = route.getRouteDirections().get(dirTag).getName();
+        RouteDirection routeDirection = route.getRouteDirections().get(dirTag);
 
-        if (dirName == null) {
+        if (routeDirection == null) {
             return null;
         }
 
         return new RouteDetailsOutputData(
                 routeTag,
                 dirTag,
-                dirName,
+                routeDirection.getName(),
                 routeDAO.getRouteShapes().get(routeTag)
         );
     }
