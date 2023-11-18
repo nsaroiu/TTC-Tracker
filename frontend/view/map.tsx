@@ -7,9 +7,9 @@ import {
   MarkerClusterer,
 } from "@react-google-maps/api";
 
-import {Stops} from "../interface_adapter/StopsData";
+import {Stops} from "../interface_adapter/display_stops/StopsData";
 
-import StopsController from "../interface_adapter/StopsController";
+import StopsController from "../interface_adapter/display_stops/StopsController";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
