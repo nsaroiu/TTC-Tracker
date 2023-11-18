@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {Stops} from "./StopsData";
+import {StopsData} from "./StopsData";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 const StopsController = () => {
@@ -18,7 +18,7 @@ const StopsController = () => {
         }
     };
 
-    const getStops = useCallback(async (): Promise<Stops|undefined> => {
+    const getStops = useCallback(async (): Promise<StopsData|undefined> => {
         try {
             // Wait for the fetchData promise to resolve
             return await fetchData();
