@@ -76,14 +76,15 @@ a {
 
 .continue-button {
   display: inline-block;
-  padding: 12px 24px; /* Increase padding for the button */
-  font-size: 1.2rem; /* Increase font size for the button */
+  padding: 12px 24px;
+  font-size: 1.2rem;
   background-color: #3498db;
   color: #fff;
   text-decoration: none;
-  border-radius: 8px; /* Round the corners */
+  border: 2px solid #000; /* Add a 2px black border */
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s; /* Add smooth transitions */
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .continue-button:hover {
