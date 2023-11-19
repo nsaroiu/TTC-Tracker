@@ -7,9 +7,10 @@ type LatLngLiteral = google.maps.LatLngLiteral;
 interface StopsProps {
     visibleStops: DisplayStopsData;
     mapZoom: number;
+    updateSelectedStop: (stopTag: string) => void;
 }
 
-const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom }) => {
+const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop }) => {
     return (
         <>
             {visibleStops && Object.keys(visibleStops).length > 0 && (
@@ -19,17 +20,20 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom }) => {
                         <Marker
                             key={key}
                             position={{ lat: visibleStops[key].lat, lng: visibleStops[key].lng }}
+                            onClick={() => updateSelectedStop(key)}
                             icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                         />
+
                     ))
                 ) : (
                     // Use marker clustering if zoom is less than 16
                     <MarkerClusterer>
                         {(clusterer) =>
-                            Object.keys(visibleStops).map((key, index) => (
+                            Object.keys(visibleStops).map((key) => (
                                 <Marker
-                                    key={index}
+                                    key={key}
                                     position={{ lat: visibleStops[key].lat, lng: visibleStops[key].lng }}
+                                    onClick={() => updateSelectedStop(key)}
                                     icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                                     clusterer={clusterer}
                                 />
