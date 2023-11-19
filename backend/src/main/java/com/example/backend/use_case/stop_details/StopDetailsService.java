@@ -54,7 +54,7 @@ public class StopDetailsService {
         if (stopName.equals("Empty")){
             stopName = stopTag;
         }
-        //Initialize the mapping (maps routeTags to routeName and dirTags)
+        //Initialize the mapping (maps routeTags to routeName and dirTags to dirName)
         HashMap<String, ArrayList<Object>> routeTagsToWrapper = new HashMap<>();
         //Use the stopTag to get the routeTags
         HashSet<String> routeTags = routeDataAccessObject.getRouteTagsByStopTag(stopTag);
@@ -68,16 +68,21 @@ public class StopDetailsService {
             HashMap<String, RouteDirection> directions = route.getRouteDirections();
             HashSet<String> dirTags = new HashSet<>();
             dirTags.addAll(directions.keySet());
-            //Create the wrapper that contains routeName and dirTags
+            //Create the wrapper that contains routeName, and dirTags to dirNames
             ArrayList<Object> wrapper = new ArrayList<>();
             wrapper.add(routeName);
-            //System.out.println(routeName);
-            wrapper.add(dirTags);
-            //Map the routeTag to the wrapper (routeName and dirTags)
+            HashMap<String, String> dirTagsToNames = new HashMap<>();
+            for (String dirTag : dirTags){
+               RouteDirection direction = directions.get(dirTag);
+               String dirName = direction.getName();
+               dirTagsToNames.put(dirTag, dirName);
+            }
+            wrapper.add(dirTagsToNames);
+            //Map the routeTag to the wrapper (routeName, and dirTags to dirNames)
             routeTagsToWrapper.put(routeTag, wrapper);
         }
 
-        //Initialize new outputData with the stopName and the routeTags
+        //Initialize new outputData with the stopName and the routeTagsToWrapper
         StopDetailsOutputData outputData = new StopDetailsOutputData(stopName, routeTagsToWrapper);
         //Return the outputData
         return outputData;

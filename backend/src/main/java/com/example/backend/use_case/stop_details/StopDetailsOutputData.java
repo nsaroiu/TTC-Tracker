@@ -10,8 +10,7 @@ public class StopDetailsOutputData {
     /**
      * Instance variables:
      * - stopName: the name of the stop
-     * - routeTagsToWrapper: maps route tags to route name and direction tags
-     * - routeTags: the tag of every route that passes through this stop
+     * - routeTagsToWrapper: maps route tags to route name, and direction tags mapped to direction names
      */
     private String stopName;
     private HashMap<String, ArrayList<Object>> routeTagsToWrapper;
