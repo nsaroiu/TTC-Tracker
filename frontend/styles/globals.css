@@ -63,7 +63,8 @@ a {
 }
 
 .title {
-  font-size: 3rem; /* Increase font size for the title */
+  font-size: 5rem; /* Increase font size for the title */
+  font-family: 'Manolo Mono', monospace;
   margin-bottom: 20px;
   color: #fff; /* Set text color to white */
   text-align: center; /* Center-align text */
@@ -78,6 +79,7 @@ a {
   display: inline-block;
   padding: 12px 24px;
   font-size: 1.2rem;
+  font-family: 'Manolo Mono', monospace;
   background-color: #3498db;
   color: #fff;
   text-decoration: none;
