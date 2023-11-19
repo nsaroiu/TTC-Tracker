@@ -3,6 +3,8 @@ import Link from "next/link";
 
 const HomePage: React.FC = () => {
     return (
+        <>
+        <link href="https://fonts.cdnfonts.com/css/manolo-mono" rel="stylesheet"></link>
         <div className="home-container">
             <h1 className="title">TTC Tracker</h1>
             <div className="button-container">
@@ -11,6 +13,7 @@ const HomePage: React.FC = () => {
                 </Link>
             </div>
         </div>
+        </>
     );
 };
 
