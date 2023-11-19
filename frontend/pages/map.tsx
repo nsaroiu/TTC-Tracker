@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useCallback, useRef, useEffect} from "react";
-import { useRouter } from "next/router";
+
 import {
     GoogleMap,
 } from "@react-google-maps/api";
@@ -17,7 +17,6 @@ type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions
 
 const Map: React.FC = () => {
-    const router = useRouter();
     const mapRef = useRef<google.maps.Map>();
     const center = useMemo<LatLngLiteral>(
         () => ({lat: 43.6532, lng: -79.3832}),
