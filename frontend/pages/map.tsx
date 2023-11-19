@@ -9,6 +9,10 @@ import {DisplayStopsData} from "../interface_adapter/display_stops/StopsData";
 import StopsController from "../interface_adapter/display_stops/StopsController";
 import Stops from "./stops";
 
+import StopDetailsController from "../interface_adapter/stop_details/StopDetailsController";
+import StopDetails from "./stop_details";
+import StopDetailsData from "../interface_adapter/stop_details/StopDetailsData";
+
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions
 
@@ -68,6 +72,25 @@ const Map: React.FC = () => {
         };
     }, [stops]);
 
+    const {getStopDetails} = StopDetailsController();
+    const [selectedStop, setSelectedStop] = useState<string | null>(null);
+    const [stopDetails, setStopDetails] = useState<StopDetailsData | null>(null);
+    const handleStopClick = (stopTag: string) => {
+        setSelectedStop(stopTag);
+    };
+
+    useEffect(() => {
+        if (selectedStop) {
+            getStopDetails(selectedStop).then((stopDetails) => {
+                if (!stopDetails) {
+                    return;
+                }
+                setStopDetails(stopDetails);
+            });
+        }
+    }, [selectedStop]);
+
+
 
     const options = useMemo<MapOptions>(
         () => ({
@@ -99,6 +122,9 @@ const Map: React.FC = () => {
         <div className="container">
             <div className="controls">
                 <button onClick={handleGetStops}>Get Stops</button>
+                {selectedStop && stopDetails && (
+                    <StopDetails stopDetails={stopDetails}/>
+                )}
             </div>
             <div className="map">
                 <GoogleMap
@@ -107,9 +133,9 @@ const Map: React.FC = () => {
                     mapContainerClassName="map-container"
                     options={options}
                     onLoad={onLoad}
+                    onClick={() => setSelectedStop(null)}
                 >
-                    <Stops visibleStops={visibleStops} mapZoom={mapZoom}/>
-
+                    <Stops visibleStops={visibleStops} mapZoom={mapZoom} updateSelectedStop={handleStopClick}/>
 
                 </GoogleMap>
             </div>
