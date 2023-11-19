@@ -2,10 +2,15 @@ package com.example.backend.use_case.stop_details;
 
 import com.example.backend.data_access.route.RouteDataAccessInterface;
 import com.example.backend.data_access.stop.StopDataAccessInterface;
+import com.example.backend.entity.RouteDirection;
 import com.example.backend.entity.Stop;
+import com.example.backend.entity.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.service.invoker.HttpServiceArgumentResolver;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -49,10 +54,31 @@ public class StopDetailsService {
         if (stopName.equals("Empty")){
             stopName = stopTag;
         }
+        //Initialize the mapping (maps routeTags to routeName and dirTags)
+        HashMap<String, ArrayList<Object>> routeTagsToWrapper = new HashMap<>();
         //Use the stopTag to get the routeTags
         HashSet<String> routeTags = routeDataAccessObject.getRouteTagsByStopTag(stopTag);
+        for (String routeTag : routeTags){
+            //Use the routeTag to get the route
+            Route route = routeDataAccessObject.getRouteByRouteTag(routeTag);
+            //Use the route to get the routeName
+            //TODO: Replace this with route.getName() once implemented
+            String routeName = route.getRouteTag();
+            //Use the route to get its direction tags
+            HashMap<String, RouteDirection> directions = route.getRouteDirections();
+            HashSet<String> dirTags = new HashSet<>();
+            dirTags.addAll(directions.keySet());
+            //Create the wrapper that contains routeName and dirTags
+            ArrayList<Object> wrapper = new ArrayList<>();
+            wrapper.add(routeName);
+            //System.out.println(routeName);
+            wrapper.add(dirTags);
+            //Map the routeTag to the wrapper (routeName and dirTags)
+            routeTagsToWrapper.put(routeTag, wrapper);
+        }
+
         //Initialize new outputData with the stopName and the routeTags
-        StopDetailsOutputData outputData = new StopDetailsOutputData(stopName, routeTags);
+        StopDetailsOutputData outputData = new StopDetailsOutputData(stopName, routeTagsToWrapper);
         //Return the outputData
         return outputData;
     }

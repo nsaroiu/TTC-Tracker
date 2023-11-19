@@ -1,5 +1,7 @@
 package com.example.backend.use_case.stop_details;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 /**
  * This is the output data class for the stop details use case.
@@ -8,24 +10,26 @@ public class StopDetailsOutputData {
     /**
      * Instance variables:
      * - stopName: the name of the stop
-     * - routeTags: a set of all the routeTags of routes going through this stop
+     * - routeTagsToWrapper: maps route tags to route name and direction tags
+     * - routeTags: the tag of every route that passes through this stop
      */
     private String stopName;
-    private HashSet<String> routeTags;
-    //private HashMap<String, ArrayList<>>?
+    private HashMap<String, ArrayList<Object>> routeTagsToWrapper;
     /**
      * Creates a new instance of StopDetailsOutputData
      */
-    public StopDetailsOutputData(String stopName, HashSet<String> routeTags) {
+    public StopDetailsOutputData(String stopName, HashMap<String, ArrayList<Object>> routeTagsToWrapper) {
         this.stopName = stopName;
-        this.routeTags = routeTags;
+        this.routeTagsToWrapper = routeTagsToWrapper;
     }
     /**
     * Returns the stopName
     */
     public String getName(){return this.stopName;}
     /**
-     * Returns the routeTags
+     * Returns the mapping from route tags to route name and direction tags
      */
-    public HashSet<String> getRouteTags(){return this.routeTags;}
+    public HashMap<String, ArrayList<Object>> getRouteTagsToWrapper(){return this.routeTagsToWrapper;}
+
+    //public HashSet<String> getRouteTags(){return this.routeTags;}
 }
