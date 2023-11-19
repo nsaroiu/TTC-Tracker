@@ -1,5 +1,7 @@
-const StopsDetailsController = () => {
-    const fetchStopDetails = async (stopTag: string) => {
+import StopDetailsOutputData from "./StopDetailsData";
+import {useCallback} from "react";
+const StopDetailsController = () => {
+    const fetchStopDetails = async (stopTag: string):Promise<StopDetailsOutputData|undefined> => {
         try {
             const response = await fetch('http://localhost:8080/stopsdetails', {
                 method: 'POST',
@@ -21,7 +23,7 @@ const StopsDetailsController = () => {
         }
     };
 
-    const getStopDetails = async (stopTag: string): Promise<any | undefined> => {
+    const getStopDetails = useCallback(async (stopTag: string): Promise<StopDetailsOutputData | undefined> => {
         try {
             // Wait for the fetchData promise to resolve
             return await fetchStopDetails(stopTag);
@@ -30,11 +32,11 @@ const StopsDetailsController = () => {
             console.error('Error fetching data:', error.message);
             return undefined;
         }
-    };
+    }, []);
 
     return {
         getStopDetails
     }
 };
 
-export default StopsDetailsController;
+export default StopDetailsController;
