@@ -17,7 +17,7 @@ public class RouteDetailsController {
      * @param dirTag String representing the dirTag
      * @return RouteDetailsOutputData object containing the routeTag, dirTag, dirName, and routeShape. Null if the routeTag or dirTag is invalid.
      */
-    @PostMapping("/route_details")
+    @PostMapping("/route-details")
     public RouteDetailsOutputData execute(@RequestParam String routeTag, @RequestParam String dirTag) {
         return routeDetailsImplementation.execute(routeTag, dirTag);
     }
