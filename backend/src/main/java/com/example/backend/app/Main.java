@@ -24,8 +24,12 @@ public class Main {
 
         Route route = routeDAO.getRouteByRouteTag("510");
 
-        System.out.println(route.getRouteDirections().keySet());
+        System.out.println(stopTags);
+        System.out.println(route.getStops().keySet());
 
+        // Should be same bc getRouteByRouteTag calls getStopTagsByRouteTag
+        System.out.println(route.getStops().keySet().size() == stopTags.size());
+        
     }
 
     public static void updateStopDataCsv() throws IOException {
