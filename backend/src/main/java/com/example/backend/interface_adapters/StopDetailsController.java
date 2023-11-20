@@ -20,7 +20,7 @@ public class StopDetailsController {
     /**
      * Given a stopTag, creates the input data and executes the service with it.
      */
-    @PostMapping("/stopdetails")
+    @PostMapping("/stop-details")
     public StopDetailsOutputData execute(@RequestParam String stopTag){
         return stopDetailsImplementation.execute(stopTag);
     }
