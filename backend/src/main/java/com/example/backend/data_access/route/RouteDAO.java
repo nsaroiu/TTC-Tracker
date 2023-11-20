@@ -78,7 +78,7 @@ public class RouteDAO implements RouteDataAccessInterface {
             // If the stop tag is found, return the set of route tags
             while ((nextRecord = csvReader.readNext()) != null) {
                 if (nextRecord[0].equals(stopTag)) {
-                    return new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
+                    return new HashSet<>(Arrays.asList(nextRecord[4].split(",")));
                 }
             }
         } catch (IOException | CsvValidationException e) {

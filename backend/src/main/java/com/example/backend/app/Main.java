@@ -34,7 +34,7 @@ public class Main {
 
         // Should be same bc getRouteByRouteTag calls getStopTagsByRouteTag
         System.out.println(route.getStops().keySet().size() == stopTags.size());
-
+        
     }
 
     public static void updateStopDataCsv() throws IOException {
