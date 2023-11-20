@@ -1,7 +1,4 @@
 package com.example.backend.interface_adapters;
-
-import com.example.backend.use_case.stop_details.StopDetailsImplementation;
-import com.example.backend.use_case.stop_details.StopDetailsInputData;
 import com.example.backend.use_case.stop_details.StopDetailsOutputData;
 import com.example.backend.use_case.stop_details.StopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +17,11 @@ public class StopDetailsController {
     @Autowired
     private StopDetailsService stopDetailsImplementation;
 
-//    public StopDetailsController(StopDetailsService stopDetailsService){
-//        this.stopDetailsService = stopDetailsService;
-//    }
-
     /**
      * Given a stopTag, creates the input data and executes the service with it.
      */
     @PostMapping("/stopdetails")
     public StopDetailsOutputData execute(@RequestParam String stopTag){
-        StopDetailsInputData inputData = new StopDetailsInputData(stopTag);
-        return stopDetailsImplementation.execute(inputData);
+        return stopDetailsImplementation.execute(stopTag);
     }
 }
