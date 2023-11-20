@@ -112,7 +112,7 @@ public class RouteDAO implements RouteDataAccessInterface {
             String[] nextRecord = csvReader.readNext();
 
             while ((nextRecord = csvReader.readNext()) != null) {
-                HashSet<String> routeTags = new HashSet<>(Arrays.asList(nextRecord[3].split(",")));
+                HashSet<String> routeTags = new HashSet<>(Arrays.asList(nextRecord[4].split(",")));
                 stopTagsToRouteTags.put(nextRecord[0], routeTags);
             }
         } catch (IOException | CsvValidationException e) {
