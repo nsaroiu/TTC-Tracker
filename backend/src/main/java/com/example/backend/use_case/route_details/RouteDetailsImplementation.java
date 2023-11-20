@@ -32,8 +32,6 @@ public class RouteDetailsImplementation implements RouteDetailsService {
         }
 
         return new RouteDetailsOutputData(
-                routeTag,
-                dirTag,
                 routeDirection.getName(),
                 routeDAO.getRouteShapes().get(routeTag)
         );

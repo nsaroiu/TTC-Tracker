@@ -7,27 +7,15 @@ import java.util.ArrayList;
 public class RouteDetailsOutputData {
 
     ArrayList<Location> shape;
-    String routeTag;
-    String dirTag;
     String dirName;
 
-    public RouteDetailsOutputData(String routeTag, String dirTag, String dirName, ArrayList<Location> shape) {
-        this.routeTag = routeTag;
-        this.dirTag = dirTag;
+    public RouteDetailsOutputData(String dirName, ArrayList<Location> shape) {
         this.dirName = dirName;
         this.shape = shape;
     }
 
     public ArrayList<Location> getShape() {
         return shape;
-    }
-
-    public String getRouteTag() {
-        return routeTag;
-    }
-
-    public String getDirTag() {
-        return dirTag;
     }
 
     public String getDirName() {
