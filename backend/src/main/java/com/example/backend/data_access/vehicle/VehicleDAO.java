@@ -3,12 +3,14 @@ package com.example.backend.data_access.vehicle;
 import com.example.backend.data_access.InvalidRequestException;
 import com.example.backend.data_access.UmoiqApiCaller;
 import com.example.backend.entity.Vehicle;
+import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.util.*;
 
+@Repository
 public class VehicleDAO implements VehicleDataAccessInterface {
 
     /** Returns a list of vehicles for a given route.

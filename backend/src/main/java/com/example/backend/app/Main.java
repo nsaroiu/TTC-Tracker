@@ -2,8 +2,6 @@ package com.example.backend.app;
 
 import com.example.backend.data_access.InvalidRequestException;
 import com.example.backend.data_access.UmoiqApiCaller;
-import com.example.backend.data_access.stop.StopDAO;
-import com.example.backend.data_access.stop.StopDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.opencsv.CSVWriter;
 import com.example.backend.data_access.route.RouteDAO;
@@ -22,10 +20,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        StopDataAccessInterface stopDAO = new StopDAO();
         RouteDataAccessInterface routeDAO = new RouteDAO();
-
-        HashSet<String> stopTags = stopDAO.getStopTagsByRouteTag("510");
 
         Route route = routeDAO.getRouteByRouteTag("510");
 
