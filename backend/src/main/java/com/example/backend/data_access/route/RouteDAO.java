@@ -1,5 +1,7 @@
 package com.example.backend.data_access.route;
 
+import com.example.backend.data_access.direction.DirectionDAO;
+import com.example.backend.data_access.direction.DirectionDataAccessInterface;
 import com.example.backend.data_access.stop.StopDAO;
 import com.example.backend.data_access.stop.StopDataAccessInterface;
 import com.example.backend.entity.*;
@@ -177,49 +179,51 @@ public class RouteDAO implements RouteDataAccessInterface {
             stopMap.put(stop.getTag(), stop);
         }
 
-        // Create RouteDirection ArrayList of directions for the route
-        ArrayList<RouteDirection> routeDirections = new ArrayList<>();
+        // Get Direction Map of directions for the route
+        DirectionDataAccessInterface directionDAO = new DirectionDAO();
+        HashMap<String, RouteDirection> routeDirections = directionDAO.getDirectionsByRouteTag(tag);
 
-        try {
-            String[][] params = {{"command", "routeConfig"}, {"r", tag}};
-            Document doc = UmoiqApiCaller.getRequest(params);
 
-            NodeList directionNodeList = doc.getElementsByTagName("direction");
-
-            // Add each direction to the ArrayList
-            for (int i = 0; i < directionNodeList.getLength(); i++) {
-                Element element = (Element) directionNodeList.item(i);
-
-                NodeList stopNodeList = element.getElementsByTagName("stop");
-                ArrayList<String> stopTags = new ArrayList<>();
-
-                for (int j = 0; j < stopNodeList.getLength(); j++) {
-                    Element stopElement = (Element) stopNodeList.item(j);
-                    stopTags.add(stopElement.getAttribute("tag").split("_")[0]);
-                }
-
-                RouteDirection routeDirection = new RouteDirection(
-                        stopTags,
-                        element.getAttribute("tag"),
-                        element.getAttribute("title")
-                );
-
-                routeDirections.add(routeDirection);
-            }
-
-        } catch (NullPointerException | InvalidRequestException e) {
-            e.printStackTrace();
-        }
-
-        HashMap<String, RouteDirection> routeDirectionMap = new HashMap<>();
-        for (RouteDirection routeDirection : routeDirections) {
-            routeDirectionMap.put(routeDirection.getDirTag(), routeDirection);
-        }
+//        try {
+//            String[][] params = {{"command", "routeConfig"}, {"r", tag}};
+//            Document doc = UmoiqApiCaller.getRequest(params);
+//
+//            NodeList directionNodeList = doc.getElementsByTagName("direction");
+//
+//            // Add each direction to the ArrayList
+//            for (int i = 0; i < directionNodeList.getLength(); i++) {
+//                Element element = (Element) directionNodeList.item(i);
+//
+//                NodeList stopNodeList = element.getElementsByTagName("stop");
+//                ArrayList<String> stopTags = new ArrayList<>();
+//
+//                for (int j = 0; j < stopNodeList.getLength(); j++) {
+//                    Element stopElement = (Element) stopNodeList.item(j);
+//                    stopTags.add(stopElement.getAttribute("tag").split("_")[0]);
+//                }
+//
+//                RouteDirection routeDirection = new RouteDirection(
+//                        stopTags,
+//                        element.getAttribute("tag"),
+//                        element.getAttribute("title")
+//                );
+//
+//                routeDirections.add(routeDirection);
+//            }
+//
+//        } catch (NullPointerException | InvalidRequestException e) {
+//            e.printStackTrace();
+//        }
+//
+//        HashMap<String, RouteDirection> routeDirectionMap = new HashMap<>();
+//        for (RouteDirection routeDirection : routeDirections) {
+//            routeDirectionMap.put(routeDirection.getDirTag(), routeDirection);
+//        }
 
         return new Route(
                 stopMap,
                 tag,
-                routeDirectionMap
+                routeDirections
         );
 
     }
