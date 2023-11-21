@@ -11,6 +11,9 @@ import java.util.*;
 public class DirectionDAO implements DirectionDataAccessInterface {
     private final String directionsCsvFilename = "backend/src/main/java/com/example/backend/data/directions.csv";
 
+    /** Returns a map of all directions that run on a route, given its route tag
+     *
+     * @return mapping of direction tag to RouteDirection for the route **/
     public HashMap<String, RouteDirection> getDirectionsByRouteTag(String routeTag) {
         HashMap<String, RouteDirection> routeDirections = new HashMap<>();
 
@@ -39,6 +42,9 @@ public class DirectionDAO implements DirectionDataAccessInterface {
         return routeDirections;
     }
 
+    /** Returns the shape of the direction, given its direction tag
+     *
+     * @return list of locations corresponding to the direction's path **/
     public ArrayList<Location> getShapeByDirTag(String dirTag) {
         ArrayList<Location> shape = new ArrayList<>();
 
