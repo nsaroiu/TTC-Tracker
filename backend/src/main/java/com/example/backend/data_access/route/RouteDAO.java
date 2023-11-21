@@ -6,8 +6,6 @@ import com.example.backend.entity.*;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.example.backend.data_access.*;
-import com.example.backend.data_access.vehicle.VehicleDAO;
-import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -171,14 +169,6 @@ public class RouteDAO implements RouteDataAccessInterface {
      */
     public Route getRouteByRouteTag(String tag) {
 
-        // Create Vehicle Map of vehicles serving the route
-        VehicleDataAccessInterface vehicleDAO = new VehicleDAO();
-        ArrayList<Vehicle> vehicles = vehicleDAO.getVehiclesByRouteTag(tag);
-        HashMap<Integer, Vehicle> vehicleMap = new HashMap<>();
-        for (Vehicle vehicle : vehicles) {
-            vehicleMap.put(vehicle.getId(), vehicle);
-        }
-
         // Create Stop Map of stops serving the route
         StopDataAccessInterface stopDAO = new StopDAO();
         HashSet<Stop> stopSet = stopDAO.getStopsByRouteTag(tag);
@@ -227,7 +217,6 @@ public class RouteDAO implements RouteDataAccessInterface {
         }
 
         return new Route(
-                vehicleMap,
                 stopMap,
                 tag,
                 routeDirectionMap
