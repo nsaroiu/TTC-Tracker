@@ -2,7 +2,7 @@ package com.example.backend.entity;
 
 import java.util.HashSet;
 
-public class Stop {
+public class Stop implements DistanceMeasurable {
 
     String tag;
     String name;
@@ -28,5 +28,9 @@ public class Stop {
 
     public HashSet<String> getRouteTags() {
         return routeTags;
+    }
+
+    public float distanceTo(DistanceMeasurable other) {
+        return location.distanceTo(other.getLocation());
     }
 }
