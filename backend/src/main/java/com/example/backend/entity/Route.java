@@ -4,20 +4,14 @@ import java.util.HashMap;
 
 public class Route {
 
-    HashMap<Integer, Vehicle> vehicles;
     HashMap<String, Stop> stops;
     String routeTag;
     HashMap<String, RouteDirection> routeDirections;
 
-    public Route(HashMap<Integer, Vehicle> vehicles, HashMap<String, Stop> stops, String routeTag, HashMap<String, RouteDirection> routeDirections) {
+    public Route(HashMap<String, Stop> stops, String routeTag, HashMap<String, RouteDirection> routeDirections) {
         this.routeTag = routeTag;
         this.stops = stops;
-        this.vehicles = vehicles;
         this.routeDirections = routeDirections;
-    }
-
-    public HashMap<Integer, Vehicle> getVehicles() {
-        return vehicles;
     }
 
     public HashMap<String, Stop> getStops() {
