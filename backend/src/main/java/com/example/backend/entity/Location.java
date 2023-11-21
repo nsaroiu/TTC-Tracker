@@ -1,8 +1,8 @@
 package com.example.backend.entity;
 
 public class Location implements DistanceMeasurable {
-    private float latitude;
-    private float longitude;
+    private final float latitude;
+    private final float longitude;
 
     public Location(float latitude, float longitude) {
         this.latitude = latitude;
