@@ -3,12 +3,11 @@ import {useCallback} from "react";
 const StopDetailsController = () => {
     const fetchStopDetails = async (stopTag: string):Promise<StopDetailsOutputData|undefined> => {
         try {
-            const response = await fetch('http://localhost:8080/stopsdetails', {
+            const response = await fetch(`http://localhost:8080/stop-details?stopTag=${stopTag}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ stopTag: stopTag }),
             });
 
             if (!response.ok) {
