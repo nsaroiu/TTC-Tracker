@@ -7,21 +7,18 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class StopsOutputData {
-    HashSet<ArrayList<Object>> stops;
+    HashSet<StopObject> stops;
 
     public StopsOutputData(HashSet<Stop> stops) {
-        this.stops = new HashSet<ArrayList<Object>>();
+        this.stops = new HashSet<>();
         for (Stop stop : stops) {
-            ArrayList<Object> stopData = new ArrayList<Object>();
-            stopData.add(stop.getName());
-            stopData.add(stop.getTag());
-            stopData.add(stop.getLocation());
-            this.stops.add(stopData);
+            this.stops.add(new StopObject(stop.getName(), stop.getTag(), stop.getLocation()));
         }
     }
 
-    public HashSet<ArrayList<Object>> getStops() {
+    public HashSet<StopObject> getStops() {
         return stops;
     }
 
 }
+
