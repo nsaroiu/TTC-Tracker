@@ -22,7 +22,7 @@ const Map: React.FC = () => {
         () => ({lat: 43.6532, lng: -79.3832}),
         []
     );
-    const [mapZoom, setZoom] = useState<number>(10);
+    const [mapZoom, setZoom] = useState<number>(15);
     const {getStops} = StopsController();
     const [stops, setStops] = useState<DisplayStopsData>();
     const [visibleStops, setVisibleStops] = useState<DisplayStopsData>({});
@@ -127,7 +127,7 @@ const Map: React.FC = () => {
             </div>
             <div className="map">
                 <GoogleMap
-                    zoom={10}
+                    zoom={15}
                     center={center}
                     mapContainerClassName="map-container"
                     options={options}
