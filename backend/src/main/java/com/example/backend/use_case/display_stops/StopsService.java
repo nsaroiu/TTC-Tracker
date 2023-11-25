@@ -5,5 +5,5 @@ import com.example.backend.entity.Location;
 import java.util.HashMap;
 
 public interface StopsService {
-    HashMap<String, Location> execute();
+    StopsOutputData execute();
 }

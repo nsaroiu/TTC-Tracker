@@ -2,6 +2,7 @@ package com.example.backend.interface_adapters;
 
 import com.example.backend.entity.Location;
 import com.example.backend.use_case.display_stops.StopsImplementation;
+import com.example.backend.use_case.display_stops.StopsOutputData;
 import com.example.backend.use_case.display_stops.StopsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +18,7 @@ public class StopsController {
     private StopsService stopsImplementation;
 
     @GetMapping("/stops")
-    public HashMap<String, Location>  execute() {
+    public StopsOutputData  execute() {
         return stopsImplementation.execute();
     }
 
