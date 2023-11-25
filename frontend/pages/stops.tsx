@@ -28,7 +28,7 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop
                 ) : (
                     // Use marker clustering if zoom is less than 16
                     <MarkerClusterer>
-                        {(clusterer) =>
+                        {(clusterer) => (
                             Object.keys(visibleStops).map((key) => (
                                 <Marker
                                     key={key}
@@ -38,7 +38,7 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop
                                     clusterer={clusterer}
                                 />
                             ))
-                        }
+                        )}
                     </MarkerClusterer>
                 )
             )}
