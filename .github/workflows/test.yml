@@ -28,4 +28,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build and Test with Maven
-      run: mvn test -Dmaven.test.redirectTestOutputToFile=false --file backend/pom.xml
+      run: mvn test --file backend/pom.xml
