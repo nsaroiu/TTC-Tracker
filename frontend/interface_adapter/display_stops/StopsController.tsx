@@ -6,12 +6,14 @@ const StopsController = () => {
         try {
             const response = await fetch("http://localhost:8080/stops");
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                console.error(`HTTP error! Status: ${response.status}`);
+                return undefined;
             }
 
             return await response.json();
         } catch (error: any) {
             console.error("Error fetching data:", error.message);
+            return undefined;
         }
     };
 
@@ -22,7 +24,7 @@ const StopsController = () => {
                 return undefined;
             }
 
-            const stops: DisplayStopsData = data.stops.map((stop: StopObject) => ({
+            return data.stops.map((stop: StopObject) => ({
                 name: stop.name,
                 tag: stop.tag,
                 location: {
@@ -30,8 +32,6 @@ const StopsController = () => {
                     lng: stop.location.longitude,
                 },
             }));
-
-            return stops;
         } catch (error: any) {
             console.error("Error fetching data:", error.message);
             return undefined;
