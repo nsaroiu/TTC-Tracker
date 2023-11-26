@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 interface HomePageProps {
     updateClicked: (clicked: boolean) => void;
