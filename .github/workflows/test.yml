@@ -27,9 +27,5 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file backend/pom.xml
-
-    # Add a new step to run tests
-    - name: Run tests
-      run: mvn test --file backend/pom.xml -X
+    - name: Build and Test with Maven
+      run: mvn verify --file backend/pom.xml
