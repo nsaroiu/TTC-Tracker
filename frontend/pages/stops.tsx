@@ -1,6 +1,6 @@
-import { Marker, MarkerClusterer } from "@react-google-maps/api";
-import React from "react";
-import { DisplayStopsData } from "../interface_adapter/display_stops/StopsData";
+import { Marker, MarkerClusterer, InfoWindow } from "@react-google-maps/api";
+import React, { useState } from "react";
+import {DisplayStopsData, DisplayStopsObject} from "../interface_adapter/display_stops/StopsData";
 
 interface StopsProps {
     visibleStops: DisplayStopsData;
@@ -9,35 +9,69 @@ interface StopsProps {
 }
 
 const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop }) => {
+    const [hoveredStop, setHoveredStop] = useState<string | null>(null);
+
+    const handleMarkerHover = (stopTag: string) => {
+        setHoveredStop(stopTag);
+    };
+
+    const handleMarkerMouseOut = () => {
+        setHoveredStop(null);
+    };
+
     return (
         <>
             {visibleStops && visibleStops.length > 0 && (
-                mapZoom && mapZoom >= 17 ? (
-                    // Display individual markers if zoom is greater than or equal to 16
-                    visibleStops.map((stop, index) => (
-                        <Marker
-                            key={stop.tag}
-                            position={{ lat: stop.location.lat, lng: stop.location.lng }}
-                            onClick={() => updateSelectedStop(stop.tag)}
-                            icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                        />
-                    ))
-                ) : (
-                    // Use marker clustering if zoom is less than 16
-                    <MarkerClusterer>
-                        {(clusterer) => (
-                            visibleStops.map((stop, index) => (
+                <>
+                    {mapZoom <= 16 ? (
+                        <MarkerClusterer>
+                            {(clusterer) => (
+                                <>
+                                    {visibleStops.map((stop: DisplayStopsObject) => (
+                                        <Marker
+                                            key={stop.tag}
+                                            position={{ lat: stop.location.lat, lng: stop.location.lng }}
+                                            onMouseOver={() => handleMarkerHover(stop.tag)}
+                                            onMouseOut={handleMarkerMouseOut}
+                                            onClick={() => updateSelectedStop(stop.tag)}
+                                            icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                                            clusterer={clusterer}
+                                        >
+                                            {hoveredStop === stop.tag && (
+                                                <InfoWindow position={{ lat: stop.location.lat, lng: stop.location.lng }}>
+                                                    <div>
+                                                        <strong>{stop.name}</strong>
+                                                    </div>
+                                                </InfoWindow>
+                                            )}
+                                        </Marker>
+                                    ))}
+                                </>
+                            )}
+                        </MarkerClusterer>
+                    ) : (
+                        <>
+                            {visibleStops.map((stop: DisplayStopsObject) => (
                                 <Marker
                                     key={stop.tag}
                                     position={{ lat: stop.location.lat, lng: stop.location.lng }}
+                                    onMouseOver={() => handleMarkerHover(stop.tag)}
+                                    onMouseOut={handleMarkerMouseOut}
                                     onClick={() => updateSelectedStop(stop.tag)}
                                     icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                                    clusterer={clusterer}
-                                />
-                            ))
-                        )}
-                    </MarkerClusterer>
-                )
+                                >
+                                    {hoveredStop === stop.tag && (
+                                        <InfoWindow position={{ lat: stop.location.lat, lng: stop.location.lng }}>
+                                            <div>
+                                                <strong>{stop.name}</strong>
+                                            </div>
+                                        </InfoWindow>
+                                    )}
+                                </Marker>
+                            ))}
+                        </>
+                    )}
+                </>
             )}
         </>
     );
