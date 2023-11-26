@@ -25,7 +25,7 @@ const Map: React.FC = () => {
     const [mapZoom, setZoom] = useState<number>(15);
     const {getStops} = StopsController();
     const [stops, setStops] = useState<DisplayStopsData>();
-    const [visibleStops, setVisibleStops] = useState<DisplayStopsData>({});
+    const [visibleStops, setVisibleStops] = useState<DisplayStopsData>([]);
     useEffect(() => {
         const updateVisibleStops = () => {
             if (mapRef.current) {
@@ -34,28 +34,23 @@ const Map: React.FC = () => {
                 if (newZoom) {
                     setZoom(newZoom);
                 }
-                console.log(bounds, newZoom)
-                let filteredStops: DisplayStopsData = {};
+                console.log(bounds, newZoom);
+                let filteredStops: DisplayStopsData = [];
                 if (newZoom) {
                     if (newZoom >= 14.5) {
-                        filteredStops = Object.keys(stops || {}).reduce((acc, key) => {
-                            if (!stops) {
-                                return acc;
+                        for (let i = 0; i < stops!.length; i++) {
+                            const stop = stops![i];
+                            if (bounds && bounds.contains({lat: stop.location.lat, lng: stop.location.lng})) {
+                                filteredStops.push(stop);
                             }
-                            const stop = stops[key];
-                            if (bounds && bounds.contains({lat: stop.lat, lng: stop.lng})) {
-                                acc[key] = stop;
-                            }
-                            return acc;
-                        }, {} as DisplayStopsData);
+                        }
                     }
                     console.log(filteredStops);
 
-                    setVisibleStops(filteredStops)
+                    setVisibleStops(filteredStops);
                 }
             }
         };
-
 
         // Call the function initially and attach it to the map's 'idle' event
         updateVisibleStops();
@@ -102,7 +97,7 @@ const Map: React.FC = () => {
     const onLoad = useCallback((map) => {
         mapRef.current = map;
         if (mapRef.current) {
-            setZoom(mapRef.current.getZoom() || 10);
+            setZoom(mapRef.current.getZoom() || 15);
         }
     }, []);
 
