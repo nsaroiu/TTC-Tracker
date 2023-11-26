@@ -32,4 +32,4 @@ jobs:
 
     # Add a new step to run tests
     - name: Run tests
-      run: mvn test --file backend/pom.xml
+      run: mvn test --file backend/pom.xml -X
