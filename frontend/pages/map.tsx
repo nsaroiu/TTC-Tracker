@@ -115,7 +115,7 @@ const Map: React.FC = () => {
     return (
         <div className="container">
             <div className="controls">
-                <button onClick={handleGetStops}>Get Stops</button>
+                <button className="button" onClick={handleGetStops}>Get Stops</button>
                 {selectedStop && stopDetails && (
                     <StopDetails stopDetails={stopDetails}/>
                 )}

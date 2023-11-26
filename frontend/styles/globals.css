@@ -75,7 +75,7 @@ a {
   margin-top: 20px;
 }
 
-.continue-button {
+.button {
   display: inline-block;
   padding: 12px 24px;
   font-size: 1.2rem;
@@ -89,7 +89,7 @@ a {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.continue-button:hover {
+.button:hover {
   background-color: #2980b9;
   transform: scale(1.05); /* Add a slight scale effect on hover */
 }

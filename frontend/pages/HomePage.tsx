@@ -11,7 +11,7 @@ const HomePage: React.FC<HomePageProps> = ({updateClicked}) => {
         <div className="home-container">
             <h1 className="title">TTC Tracker</h1>
             <div className="button-container">
-                <a className="continue-button" onClick={() => updateClicked(true)}>Continue</a>
+                <a className="button" onClick={() => updateClicked(true)}>Continue</a>
             </div>
         </div>
         </>
