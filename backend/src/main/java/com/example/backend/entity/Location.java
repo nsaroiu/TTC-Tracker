@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Location implements DistanceMeasurable {
     private final float latitude;
     private final float longitude;
@@ -9,6 +11,7 @@ public class Location implements DistanceMeasurable {
         this.longitude = longitude;
     }
 
+    @JsonIgnore
     public Location getLocation() { return this; }
 
     public float getLatitude() {
