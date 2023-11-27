@@ -13,6 +13,10 @@ import StopDetailsController from "../interface_adapter/stop_details/StopDetails
 import StopDetails from "./stop_details";
 import StopDetailsData from "../interface_adapter/stop_details/StopDetailsData";
 
+import RouteDetailsController from "../interface_adapter/route_details/RouteDetailsController";
+import RouteDetails from "./route_details";
+import {RouteData, RouteParam} from "../interface_adapter/route_details/RouteDetailsData";
+
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions
 
@@ -34,7 +38,6 @@ const Map: React.FC = () => {
                 if (newZoom) {
                     setZoom(newZoom);
                 }
-                console.log(bounds, newZoom);
                 let filteredStops: DisplayStopsData = [];
                 if (newZoom) {
                     if (newZoom >= 14.5) {
@@ -45,7 +48,6 @@ const Map: React.FC = () => {
                             }
                         }
                     }
-                    console.log(filteredStops);
 
                     setVisibleStops(filteredStops);
                 }
@@ -71,6 +73,7 @@ const Map: React.FC = () => {
     const [stopDetails, setStopDetails] = useState<StopDetailsData | null>(null);
     const handleStopClick = (stopTag: string) => {
         setSelectedStop(stopTag);
+        setRouteDetails(null);
     };
 
     useEffect(() => {
@@ -84,7 +87,24 @@ const Map: React.FC = () => {
         }
     }, [selectedStop]);
 
+    const [selectedRouteParam, setSelectedRouteParam] = useState<RouteParam | null>(null);
+    const {getRouteDetails} = RouteDetailsController();
+    const [routeDetails, setRouteDetails] = useState<RouteData | null>(null);
+    const handleRouteChange = (routeParam: RouteParam) => {
+        setSelectedRouteParam(routeParam);
+    };
 
+    useEffect(() => {
+        if (selectedRouteParam) {
+            getRouteDetails(selectedRouteParam).then((routeDetails) => {
+                if (!routeDetails) {
+                    return;
+                }
+                console.log(routeDetails);
+                setRouteDetails(routeDetails);
+            });
+        }
+    }, [selectedRouteParam]);
 
     const options = useMemo<MapOptions>(
         () => ({
@@ -105,7 +125,6 @@ const Map: React.FC = () => {
     const handleGetStops = useCallback(() => {
         getStops().then((stops) => {
                 setStops(stops);
-                console.log(stops);
             }
         );
     }, []);
@@ -117,7 +136,7 @@ const Map: React.FC = () => {
             <div className="controls">
                 <button className="button" onClick={handleGetStops}>Get Stops</button>
                 {selectedStop && stopDetails && (
-                    <StopDetails stopDetails={stopDetails}/>
+                    <StopDetails stopDetails={stopDetails} UpdateSelectedRoute={handleRouteChange}/>
                 )}
             </div>
             <div className="map">
@@ -127,10 +146,12 @@ const Map: React.FC = () => {
                     mapContainerClassName="map-container"
                     options={options}
                     onLoad={onLoad}
-                    onClick={() => setSelectedStop(null)}
+                    onClick={() => {setSelectedStop(null), setRouteDetails(null)}}
                 >
                     <Stops visibleStops={visibleStops} mapZoom={mapZoom} updateSelectedStop={handleStopClick}/>
-
+                    {routeDetails && selectedStop && (
+                        <RouteDetails routeDetails={routeDetails}/>
+                    )}
                 </GoogleMap>
             </div>
         </div>
