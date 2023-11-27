@@ -1,16 +1,21 @@
 // StopsDetails.tsx
 import React, { useState } from 'react';
 import StopDetailsOutputData from "../interface_adapter/stop_details/StopDetailsData";
+import { RouteParam } from "../interface_adapter/route_details/RouteDetailsData";
 
 interface StopsDetailsProps {
     stopDetails: StopDetailsOutputData;
+    UpdateSelectedRoute: (routeParam: RouteParam) => void;
 }
 
-const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails }) => {
+const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails, UpdateSelectedRoute }) => {
     const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+    const [selectedDirection, setSelectedDirection] = useState<string | null>(null);
 
-    const handleRouteChange = (routeTag: string) => {
+    const handleRouteChange = (routeTag: string, dirTag: string, dirName: string) => {
         setSelectedRoute(routeTag);
+        setSelectedDirection(dirName);
+        UpdateSelectedRoute({ routeTag, dirTag });
     };
 
     // Implement your UI to display stopDetails in an info window
@@ -22,7 +27,14 @@ const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails }) => {
                     <h4>{routeTag}</h4>
                     <div>
                         <label>Select Direction:</label>
-                        <select onChange={(e) => handleRouteChange(e.target.value)} value={selectedRoute || ""}>
+                        <select
+                            onChange={(e) => {
+                                const dirTag = e.target.value;
+                                const dirName = stopDetails.routeTagsToDir[routeTag][dirTag];
+                                handleRouteChange(routeTag, dirTag, dirName);
+                            }}
+                            value={selectedRoute === routeTag ? selectedDirection || "" : ""}
+                        >
                             <option value="" disabled>Select a direction</option>
                             {Object.entries(stopDetails.routeTagsToDir[routeTag]).map(([dirTag, directionName]) => (
                                 <option key={dirTag} value={dirTag}>
@@ -31,14 +43,13 @@ const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails }) => {
                             ))}
                         </select>
                     </div>
-                    {selectedRoute === routeTag && (
-                        <div>
-                            <h5>Selected Direction: {stopDetails.routeTagsToDir[routeTag][selectedRoute]}</h5>
-                            {/* Additional content for the selected direction */}
-                        </div>
-                    )}
                 </div>
             ))}
+            {stopDetails && selectedRoute && selectedDirection && (
+                <div>
+                    <h5>Selected Direction: {selectedDirection}</h5>
+                </div>
+            )}
         </div>
     );
 };
