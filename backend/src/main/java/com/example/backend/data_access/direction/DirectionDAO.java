@@ -25,7 +25,7 @@ public class DirectionDAO implements DirectionDataAccessInterface {
 
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                if (Objects.equals(row[2], routeTag)) {
+                if (row[2].equals(routeTag)) {
                     String dirTag = row[1];
                     String name = row[3];
                     List<String> stopsList = Arrays.asList(row[4].split("\\|"));
@@ -56,7 +56,7 @@ public class DirectionDAO implements DirectionDataAccessInterface {
 
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                if (Objects.equals(row[1], dirTag)) {
+                if (row[1].equals(dirTag)) {
                     String[] points = row[5].split("/");
                     for (String point : points) {
                         String[] coords = point.split("\\|");

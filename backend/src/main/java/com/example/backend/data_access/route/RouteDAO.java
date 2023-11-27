@@ -23,7 +23,6 @@ import java.util.*;
 public class RouteDAO implements RouteDataAccessInterface {
 
     private final String stopCsvFilename = "backend/src/main/java/com/example/backend/data/stopData.csv";
-    private final String shapesCsvFilename = "backend/src/main/java/com/example/backend/data/shapes.csv";
 
     /** Returns a set of all route tags for TTC.
      *
@@ -130,6 +129,7 @@ public class RouteDAO implements RouteDataAccessInterface {
         HashMap<String, ArrayList<Location>> routeShapes = new HashMap<>();
 
         // Used BufferedReader for massively improved performance
+        String shapesCsvFilename = "backend/src/main/java/com/example/backend/data/shapes.csv";
         try (BufferedReader reader = new BufferedReader(new FileReader(shapesCsvFilename))) {
             String line;
             // Skip first row (headers)
@@ -182,43 +182,6 @@ public class RouteDAO implements RouteDataAccessInterface {
         // Get Direction Map of directions for the route
         DirectionDataAccessInterface directionDAO = new DirectionDAO();
         HashMap<String, RouteDirection> routeDirections = directionDAO.getDirectionsByRouteTag(tag);
-
-
-//        try {
-//            String[][] params = {{"command", "routeConfig"}, {"r", tag}};
-//            Document doc = UmoiqApiCaller.getRequest(params);
-//
-//            NodeList directionNodeList = doc.getElementsByTagName("direction");
-//
-//            // Add each direction to the ArrayList
-//            for (int i = 0; i < directionNodeList.getLength(); i++) {
-//                Element element = (Element) directionNodeList.item(i);
-//
-//                NodeList stopNodeList = element.getElementsByTagName("stop");
-//                ArrayList<String> stopTags = new ArrayList<>();
-//
-//                for (int j = 0; j < stopNodeList.getLength(); j++) {
-//                    Element stopElement = (Element) stopNodeList.item(j);
-//                    stopTags.add(stopElement.getAttribute("tag").split("_")[0]);
-//                }
-//
-//                RouteDirection routeDirection = new RouteDirection(
-//                        stopTags,
-//                        element.getAttribute("tag"),
-//                        element.getAttribute("title")
-//                );
-//
-//                routeDirections.add(routeDirection);
-//            }
-//
-//        } catch (NullPointerException | InvalidRequestException e) {
-//            e.printStackTrace();
-//        }
-//
-//        HashMap<String, RouteDirection> routeDirectionMap = new HashMap<>();
-//        for (RouteDirection routeDirection : routeDirections) {
-//            routeDirectionMap.put(routeDirection.getDirTag(), routeDirection);
-//        }
 
         return new Route(
                 stopMap,
