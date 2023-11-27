@@ -1,6 +1,6 @@
 package com.example.backend.entity;
 
-public class Vehicle {
+public class Vehicle implements DistanceMeasurable {
 
     int id;
     int speed;
@@ -31,4 +31,8 @@ public class Vehicle {
     }
 
     public String getDirectionTag() { return directionTag; }
+
+    public float distanceTo(DistanceMeasurable other) {
+        return location.distanceTo(other.getLocation());
+    }
 }
