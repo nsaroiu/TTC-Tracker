@@ -34,11 +34,13 @@ class LocationTest {
     }
 
     @Test
-    void getDistance_ShouldThrowUnsupportedOperationException() {
+    void distanceTo_ShouldReturnCorrectDistance() {
         // Arrange
         Location otherLocation = new Location(34.0522f, -118.2437f);
 
-        // Act & Assert
-        assertThrows(UnsupportedOperationException.class, () -> location.getDistance(otherLocation));
+        float expectedDistance = 3935.7463f;
+
+        // Assert
+        assertEquals(expectedDistance, location.distanceTo(otherLocation), 0.0001);
     }
 }
