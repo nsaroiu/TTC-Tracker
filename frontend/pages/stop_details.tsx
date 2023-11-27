@@ -1,4 +1,3 @@
-// StopsDetails.tsx
 import React, { useState } from 'react';
 import StopDetailsOutputData from "../interface_adapter/stop_details/StopDetailsData";
 import { RouteParam } from "../interface_adapter/route_details/RouteDetailsData";
@@ -11,6 +10,7 @@ interface StopsDetailsProps {
 const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails, UpdateSelectedRoute }) => {
     const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
     const [selectedDirection, setSelectedDirection] = useState<string | null>(null);
+    const [dirTag, setDirTag] = useState<string | null>(null);
 
     const handleRouteChange = (routeTag: string, dirTag: string, dirName: string) => {
         setSelectedRoute(routeTag);
@@ -29,11 +29,13 @@ const StopsDetails: React.FC<StopsDetailsProps> = ({ stopDetails, UpdateSelected
                         <label>Select Direction:</label>
                         <select
                             onChange={(e) => {
-                                const dirTag = e.target.value;
+                                const dirTag:string = e.target.value;
                                 const dirName = stopDetails.routeTagsToDir[routeTag][dirTag];
+                                setDirTag(dirTag); // Update dirTag directly
+                                setSelectedDirection(dirName); // Update selectedDirection directly
                                 handleRouteChange(routeTag, dirTag, dirName);
                             }}
-                            value={selectedRoute === routeTag ? selectedDirection || "" : ""}
+                            value={dirTag || ""}
                         >
                             <option value="" disabled>Select a direction</option>
                             {Object.entries(stopDetails.routeTagsToDir[routeTag]).map(([dirTag, directionName]) => (
