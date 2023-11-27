@@ -1,36 +1,46 @@
-import {useCallback} from "react";
-import {Stops} from "./StopsData";
+import { useCallback } from "react";
+import { StopsData, DisplayStopsData, StopObject } from "./StopsData";
 
-type LatLngLiteral = google.maps.LatLngLiteral;
 const StopsController = () => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<StopsData | undefined> => {
         try {
-            const response = await fetch('http://localhost:8080/stops'); // Replace with your API endpoint
+            const response = await fetch("http://localhost:8080/stops");
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                console.error(`HTTP error! Status: ${response.status}`);
+                return undefined;
             }
 
             return await response.json();
-            // Do something with the data, e.g., update state, show in UI, etc.
         } catch (error: any) {
-            console.error('Error fetching data:', error.message);
-            // Handle error, e.g., show an error message to the user
+            console.error("Error fetching data:", error.message);
+            return undefined;
         }
     };
 
-    const getStops = useCallback(async (): Promise<Stops|undefined> => {
+    const getStops = useCallback(async (): Promise<DisplayStopsData | undefined> => {
         try {
-            // Wait for the fetchData promise to resolve
-            return await fetchData();
+            const data: StopsData | undefined = await fetchData();
+            if (!data) {
+                return undefined;
+            }
+
+            return data.stops.map((stop: StopObject) => ({
+                name: stop.name,
+                tag: stop.tag,
+                location: {
+                    lat: stop.location.latitude,
+                    lng: stop.location.longitude,
+                },
+            }));
         } catch (error: any) {
-            // Handle errors if the fetchData promise is rejected
-            console.error('Error fetching data:', error.message);
+            console.error("Error fetching data:", error.message);
+            return undefined;
         }
-    }, []);
+    }, [fetchData]);
 
     return {
-        getStops
-    }
-}
+        getStops,
+    };
+};
 
 export default StopsController;

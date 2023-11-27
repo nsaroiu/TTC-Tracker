@@ -1,9 +1,15 @@
 package com.example.backend.use_case.display_stops;
 
-import com.example.backend.entity.Location;
 
-import java.util.HashMap;
-
+/**
+ * Interface representing the service for displaying stops.
+ */
 public interface StopsService {
-    HashMap<String, Location> execute();
+
+    /**
+     * Executes the stops service and retrieves the output data.
+     *
+     * @return The output data containing information about stops.
+     */
+    StopsOutputData execute();
 }
