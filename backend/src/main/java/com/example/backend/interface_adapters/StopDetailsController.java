@@ -5,20 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This is the controller for the stop details use case.
+ * Controller handling stop details use case.
  */
 @RestController
 @CrossOrigin(origins = "*")
 public class StopDetailsController {
     /**
-    *  Instance variables:
-    *  - stopDetailsService: The service for this controller
-    */
+     * The service for this controller.
+     */
     @Autowired
     private StopDetailsService stopDetailsImplementation;
 
     /**
-     * Given a stopTag, creates the input data and executes the service with it.
+     * Executes the stop details service with the provided stopTag.
+     *
+     * @param stopTag The identifier for the stop details.
+     * @return The output data from the stop details service.
      */
     @PostMapping("/stop-details")
     public StopDetailsOutputData execute(@RequestParam String stopTag){
