@@ -11,23 +11,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * This is the implementation class for the stop details use case. It implements StopDetailsService.
+ * Implementation class for the stop details use case, implementing StopDetailsService.
  */
 @Service
 public class StopDetailsImplementation implements StopDetailsService {
     /**
-     * Instance variables:
-     *  - routeDataAccessObject: the data access object used to access data about routes (such as routeTags)
-     *  - stopDataAccessObject: the data access object used to access data about stops (such as stopName)
+     * Data access object for routes, used to access data about routes such as routeTags.
      */
     @Autowired
     private RouteDataAccessInterface routeDataAccessObject;
+
+    /**
+     * Data access object for stops, used to access data about stops such as stopName.
+     */
     @Autowired
     private StopDataAccessInterface stopDataAccessObject;
 
     /**
-     * Given an input data, extracts the stopTag and a mapping of routeTags to a mapping
-     * of direction tags to direction names, returns them as the output data.
+     * Given a stopTag, return StopDetailsOutputData.
+     * @param stopTag The identifier for the stop.
+     * @return The output data containing a mapping of routeTags to a mapping of direction tags to direction names
      */
     public StopDetailsOutputData execute(String stopTag){
         //Get a set of all stops
