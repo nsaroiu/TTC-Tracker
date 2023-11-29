@@ -92,18 +92,19 @@ public class CalculateDistanceStrategy implements Strategy {
         return index;
     }
 
-
-    public ArrayList<Float> execute(Route route, ArrayList<Vehicle> vehicles, ArrayList<Location> shape, String dirTag, String stopTag) {
+    public ArrayList<Float> execute(StrategyInputData data) {
+        Route route = data.getRoute();
+        String dirTag = data.getDirTag();
         RouteDirection direction = route.getRouteDirections().get(dirTag);
         Stop stop;
-        if (!direction.getStops().contains(stopTag)) {
+        if (!direction.getStops().contains(data.getStopTag())) {
             return new ArrayList<>();
         } else {
-            stop = route.getStops().get(stopTag);
+            stop = route.getStops().get(data.getStopTag());
         }
-        HashSet<Vehicle> vehiclesInDirection = new HashSet();
+        HashSet<Vehicle> vehiclesInDirection = new HashSet<>();
 
-        for (Vehicle vehicle : vehicles) {
+        for (Vehicle vehicle : data.getVehicles()) {
             if (vehicle.getDirectionTag().equals(dirTag)) {
                 vehiclesInDirection.add(vehicle);
             }
@@ -113,7 +114,7 @@ public class CalculateDistanceStrategy implements Strategy {
         for (Vehicle vehicle : vehiclesInDirection) {
             System.out.println("Vehicle is at " + vehicle.getLocation().getLatitude() + ", " + vehicle.getLocation().getLongitude());
             try {
-                float distance = distanceAlongShape(shape, vehicle, stop);
+                float distance = distanceAlongShape(data.getShape(), vehicle, stop);
                 distances.add(distance);
             } catch (IndexOutOfBoundsException e) {
                 return new ArrayList<>();

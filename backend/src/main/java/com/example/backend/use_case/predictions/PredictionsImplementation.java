@@ -9,7 +9,9 @@ import com.example.backend.entity.Route;
 import com.example.backend.entity.RouteDirection;
 import com.example.backend.entity.Vehicle;
 import com.example.backend.use_case.predictions.strategies.CalculateDistanceStrategy;
+import com.example.backend.use_case.predictions.strategies.ScheduleStrategy;
 import com.example.backend.use_case.predictions.strategies.Strategy;
+import com.example.backend.use_case.predictions.strategies.StrategyInputDataBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class PredictionsImplementation implements PredictionsService {
     private RouteDataAccessInterface routeDAO;
     @Autowired
     private VehicleDataAccessInterface vehicleDAO;
+    @Autowired
+    private StopDataAccessInterface stopDAO;
     @Autowired
     private DirectionDataAccessInterface directionDAO;
     private Strategy strategy;
@@ -35,7 +39,19 @@ public class PredictionsImplementation implements PredictionsService {
         ArrayList<Vehicle> vehicles = vehicleDAO.getVehiclesByRouteTag(routeTag);
         ArrayList<Location> shape = directionDAO.getShapeByDirTag(dirTag);
         setStrategy(new CalculateDistanceStrategy());
-        ArrayList<Float> predictions = strategy.execute(route, vehicles, shape, dirTag, stopTag);
+        StrategyInputDataBuilder builder = new StrategyInputDataBuilder();
+        builder = builder.setDirTag(dirTag)
+                .setStopTag(stopTag)
+                .setRoute(route)
+                .setVehicles(vehicles)
+                .setShape(shape);
+        ArrayList<Float> predictions = strategy.execute(builder.build());
+        if (predictions.isEmpty()) {
+            System.out.println("Using schedules because " + predictions);
+            setStrategy(new ScheduleStrategy());
+            builder = builder.setSchedule(stopDAO.getScheduledArrivals(stopTag, dirTag));
+            predictions = strategy.execute(builder.build());
+        }
         return new PredictionsOutputData(predictions);
     }
 }
