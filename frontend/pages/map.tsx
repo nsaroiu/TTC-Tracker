@@ -17,6 +17,9 @@ import RouteDetailsController from "../interface_adapter/route_details/RouteDeta
 import RouteDetails from "./route_details";
 import {RouteData, RouteParam} from "../interface_adapter/route_details/RouteDetailsData";
 
+import VehicleController from "../interface_adapter/vehicle_locations/VehicleController";
+import VehicleLocations from "./vehicle_locations";
+
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions
 
@@ -72,8 +75,10 @@ const Map: React.FC = () => {
     const [selectedStop, setSelectedStop] = useState<string | null>(null);
     const [stopDetails, setStopDetails] = useState<StopDetailsData | null>(null);
     const handleStopClick = (stopTag: string) => {
-        setSelectedStop(stopTag);
         setRouteDetails(null);
+        setSelectedRouteParam(null)
+        setVehicleLocations(null)
+        setSelectedStop(stopTag);
     };
 
     useEffect(() => {
@@ -87,6 +92,8 @@ const Map: React.FC = () => {
         }
     }, [selectedStop]);
 
+    const {getVehicleLocations} = VehicleController();
+    const [vehicleLocations, setVehicleLocations] = useState<LatLngLiteral[]|null>([]);
     const [selectedRouteParam, setSelectedRouteParam] = useState<RouteParam | null>(null);
     const {getRouteDetails} = RouteDetailsController();
     const [routeDetails, setRouteDetails] = useState<RouteData | null>(null);
@@ -100,11 +107,29 @@ const Map: React.FC = () => {
                 if (!routeDetails) {
                     return;
                 }
-                console.log(routeDetails);
                 setRouteDetails(routeDetails);
             });
         }
     }, [selectedRouteParam]);
+
+    useEffect(() => {
+        // Call getVehicleLocations every 30 seconds if selectedRouteParam is not null
+        const intervalId = setInterval(() => {
+            if (selectedRouteParam) {
+                getVehicleLocations(selectedRouteParam.routeTag).then((vehicleLocations) => {
+                    if (!vehicleLocations) {
+                        return;
+                    }
+                    setVehicleLocations(vehicleLocations);
+                });
+            }
+        }, 5000);
+
+        // Cleanup the interval when the component is unmounted
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [getVehicleLocations, selectedRouteParam]);
 
     const options = useMemo<MapOptions>(
         () => ({
@@ -146,11 +171,14 @@ const Map: React.FC = () => {
                     mapContainerClassName="map-container"
                     options={options}
                     onLoad={onLoad}
-                    onClick={() => {setSelectedStop(null), setRouteDetails(null)}}
+                    onClick={() => {setSelectedStop(null), setRouteDetails(null), setVehicleLocations(null)}}
                 >
                     <Stops visibleStops={visibleStops} mapZoom={mapZoom} updateSelectedStop={handleStopClick}/>
                     {routeDetails && selectedStop && (
                         <RouteDetails routeDetails={routeDetails}/>
+                    )}
+                    {vehicleLocations && (
+                        <VehicleLocations vehicleLocations={vehicleLocations}/>
                     )}
                 </GoogleMap>
             </div>
