@@ -34,7 +34,6 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop
                                             onMouseOver={() => handleMarkerHover(stop.tag)}
                                             onMouseOut={handleMarkerMouseOut}
                                             onClick={() => updateSelectedStop(stop.tag)}
-                                            icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                                             clusterer={clusterer}
                                         >
                                             {hoveredStop === stop.tag && (
@@ -58,7 +57,6 @@ const Stops: React.FC<StopsProps> = ({ visibleStops, mapZoom, updateSelectedStop
                                     onMouseOver={() => handleMarkerHover(stop.tag)}
                                     onMouseOut={handleMarkerMouseOut}
                                     onClick={() => updateSelectedStop(stop.tag)}
-                                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                                 >
                                     {hoveredStop === stop.tag && (
                                         <InfoWindow position={{ lat: stop.location.lat, lng: stop.location.lng }}>
