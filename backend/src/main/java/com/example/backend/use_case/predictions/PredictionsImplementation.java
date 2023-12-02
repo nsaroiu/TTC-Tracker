@@ -15,6 +15,8 @@ import com.example.backend.use_case.predictions.strategies.StrategyInputDataBuil
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 @Service
@@ -44,10 +46,10 @@ public class PredictionsImplementation implements PredictionsService {
                 .setStopTag(stopTag)
                 .setRoute(route)
                 .setVehicles(vehicles)
-                .setShape(shape);
+                .setShape(shape)
+                .setAvgSpeed(directionDAO.getAverageSpeed(dirTag, String.valueOf(LocalDateTime.now(ZoneOffset.UTC).getHour())));
         ArrayList<Float> predictions = strategy.execute(builder.build());
         if (predictions.isEmpty()) {
-            System.out.println("Using schedules because " + predictions);
             setStrategy(new ScheduleStrategy());
             builder = builder.setSchedule(stopDAO.getScheduledArrivals(stopTag, dirTag));
             predictions = strategy.execute(builder.build());

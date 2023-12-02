@@ -16,4 +16,10 @@ public interface DirectionDataAccessInterface {
      *
      * @return list of locations corresponding to the direction's path **/
     ArrayList<Location> getShapeByDirTag(String dirTag);
+
+    /** Returns the average speed of vehicles serving the specified direction at the specified time
+     * @param dirTag String representing the direction tag
+     * @param hour String representing the time
+     * @return float representing the average speed of vehicles serving the direction at the specified time **/
+    float getAverageSpeed(String dirTag, String hour);
 }

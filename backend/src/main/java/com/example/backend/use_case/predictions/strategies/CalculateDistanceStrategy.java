@@ -95,9 +95,10 @@ public class CalculateDistanceStrategy implements Strategy {
     public ArrayList<Float> execute(StrategyInputData data) {
         Route route = data.getRoute();
         String dirTag = data.getDirTag();
+        float avgSpeed = data.getAvgSpeed();
         RouteDirection direction = route.getRouteDirections().get(dirTag);
         Stop stop;
-        if (!direction.getStops().contains(data.getStopTag())) {
+        if (!direction.getStops().contains(data.getStopTag()) || avgSpeed <= 0) {
             return new ArrayList<>();
         } else {
             stop = route.getStops().get(data.getStopTag());
@@ -127,7 +128,7 @@ public class CalculateDistanceStrategy implements Strategy {
         for (float distance : distances) {
             if (i < 3) {
                 float prediction = (distance / speedConstant);
-                predictions.add(prediction);
+                predictions.add(prediction / avgSpeed * 60);
                 i += 1;
             }
             else {

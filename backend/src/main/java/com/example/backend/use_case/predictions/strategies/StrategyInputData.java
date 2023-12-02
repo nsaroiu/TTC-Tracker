@@ -14,6 +14,7 @@ public class StrategyInputData {
     private ArrayList<Vehicle> vehicles;
     private ArrayList<Location> shape;
     private ArrayList<String> schedule;
+    private float avgSpeed;
 
     public StrategyInputData() {}
 
@@ -41,6 +42,8 @@ public class StrategyInputData {
         return schedule;
     }
 
+    public float getAvgSpeed() { return avgSpeed; }
+
     public void setDirTag(String dirTag) {
         this.dirTag = dirTag;
     }
@@ -64,5 +67,7 @@ public class StrategyInputData {
     public void setSchedule(ArrayList<String> schedule) {
         this.schedule = schedule;
     }
+
+    public void setAvgSpeed(float avgSpeed) { this.avgSpeed = avgSpeed; }
 
 }

@@ -44,6 +44,11 @@ public class StrategyInputDataBuilder {
         return this;
     }
 
+    public StrategyInputDataBuilder setAvgSpeed(float avgSpeed) {
+        data.setAvgSpeed(avgSpeed);
+        return this;
+    }
+
     public StrategyInputData build() {
         return data;
     }
