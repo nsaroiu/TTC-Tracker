@@ -2,12 +2,14 @@ package com.example.backend.data_access.direction;
 
 import com.example.backend.entity.Location;
 import com.example.backend.entity.RouteDirection;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@Repository
 public class DirectionDAO implements DirectionDataAccessInterface {
     private final String directionsCsvFilename = "backend/src/main/java/com/example/backend/data/directions.csv";
 
