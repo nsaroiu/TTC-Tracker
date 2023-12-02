@@ -1,9 +1,7 @@
 package com.example.backend.data_access.route;
 
-import com.example.backend.entity.Location;
 import com.example.backend.entity.Route;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -28,12 +26,6 @@ public interface RouteDataAccessInterface {
      * @see HashMap
      */
     HashMap<String, HashSet<String>> getStopTagsToRouteTags();
-
-    /** Returns the shape (array of locations) of every TTC routes.
-     *
-     * @return HashMap mapping route tags to an array of Locations (coordinates) for the route
-     */
-    HashMap<String, ArrayList<Location>> getRouteShapes();
 
     /** Returns a Route object for the given route tag.
      *

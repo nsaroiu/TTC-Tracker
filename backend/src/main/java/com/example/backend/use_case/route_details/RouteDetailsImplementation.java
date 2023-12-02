@@ -1,5 +1,6 @@
 package com.example.backend.use_case.route_details;
 
+import com.example.backend.data_access.direction.DirectionDataAccessInterface;
 import com.example.backend.data_access.route.RouteDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.example.backend.entity.RouteDirection;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 public class RouteDetailsImplementation implements RouteDetailsService {
     @Autowired
     private RouteDataAccessInterface routeDAO;
+    @Autowired
+    private DirectionDataAccessInterface directionDAO;
 
     /** Returns the route details for the given routeTag and dirTag. Returns null if the routeTag or dirTag is invalid.
      *
@@ -33,7 +36,7 @@ public class RouteDetailsImplementation implements RouteDetailsService {
 
         return new RouteDetailsOutputData(
                 routeDirection.getName(),
-                routeDAO.getRouteShapes().get(routeTag)
+                directionDAO.getShapeByDirTag(dirTag)
         );
     }
 
