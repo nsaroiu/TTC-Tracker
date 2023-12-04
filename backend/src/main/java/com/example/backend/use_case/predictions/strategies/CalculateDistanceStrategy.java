@@ -119,7 +119,7 @@ public class CalculateDistanceStrategy implements Strategy {
                 float distance = distanceAlongShape(data.getShape(), vehicle, stop);
                 distances.add(distance);
             } catch (IndexOutOfBoundsException e) {
-                return new ArrayList<>();
+                // Do nothing, iterate to next vehicle
             }
         }
         Collections.sort(distances);
