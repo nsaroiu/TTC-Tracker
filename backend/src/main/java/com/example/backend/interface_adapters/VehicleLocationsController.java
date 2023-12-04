@@ -15,8 +15,8 @@ public class VehicleLocationsController {
     private VehicleLocationsService vehicleLocationsImplementation;
 
     @PostMapping("/vehicle-locations")
-    public VehicleLocationsOutputData execute(@RequestParam String routeTag) {
-        return vehicleLocationsImplementation.execute(routeTag);
+    public VehicleLocationsOutputData execute(@RequestParam String routeTag, @RequestParam String dirTag) {
+        return vehicleLocationsImplementation.execute(routeTag, dirTag);
     }
 
 }
