@@ -23,7 +23,6 @@ public class RouteDetailsImplementation implements RouteDetailsService {
     public RouteDetailsOutputData execute(String routeTag, String dirTag) {
         Route route = routeDAO.getRouteByRouteTag(routeTag);
 
-        // TODO: Fix error handling
         if (route == null) {
             return null;
         }
