@@ -22,7 +22,7 @@ public class CalculateDistanceStrategy implements Strategy {
             float d1 = obj1.distanceTo(shape.get(i));
             float d2 = obj1.distanceTo(shape.get(i + 1));
             float d3 = shape.get(i).distanceTo(shape.get(i + 1));
-            if (Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2) > 2 * d1 * d3) {
+            if ((Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2)) / (2 * d1 * d3) > 0) {
                 // If obj1 has passed the closest point, then the next point will be at i + 1
                 i += 1;
             }
@@ -32,7 +32,7 @@ public class CalculateDistanceStrategy implements Strategy {
             float d1 = obj1.distanceTo(shape.get(i));
             float d2 = obj1.distanceTo(shape.get(i - 1));
             float d3 = shape.get(i).distanceTo(shape.get(i - 1));
-            if (Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2) < 2 * d1 * d3) {
+            if ((Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2)) / (2 * d1 * d3) < 0) {
                 // obj1 has passed the end of the shape, but there is no next point in shape. This is an error.
                 throw new IndexOutOfBoundsException("failed because i is out of bounds");
             }
@@ -44,7 +44,7 @@ public class CalculateDistanceStrategy implements Strategy {
             float d1 = obj2.distanceTo(shape.get(j));
             float d2 = obj2.distanceTo(shape.get(j - 1));
             float d3 = shape.get(j).distanceTo(shape.get(j - 1));
-            if (Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2) > 2 * d1 * d3) {
+            if ((Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2)) / (2 * d1 * d3) > 0) {
                 // If obj2 has passed the closest point, then the next point will be at i + 1
                 j -= 1;
             }
@@ -54,7 +54,7 @@ public class CalculateDistanceStrategy implements Strategy {
             float d1 = obj2.distanceTo(shape.get(i));
             float d2 = obj2.distanceTo(shape.get(i + 1));
             float d3 = shape.get(i).distanceTo(shape.get(i + 1));
-            if (Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2) < 2 * d1 * d3) {
+            if ((Math.pow(d1, 2) + Math.pow(d3, 2) - Math.pow(d2, 2)) / (2 * d1 * d3) < 0) {
                 // obj2 has not passed the start of the shape, but there is no previous point in shape. This is an error.
                 throw new IndexOutOfBoundsException("failed because j is out of bounds");
             }
