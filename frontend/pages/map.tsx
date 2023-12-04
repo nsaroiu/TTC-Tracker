@@ -31,8 +31,8 @@ const Map: React.FC = () => {
     );
     const [mapZoom, setZoom] = useState<number>(15);
     const {getStops} = StopsController();
-    const [stops, setStops] = useState<DisplayStopsData>();
     const [visibleStops, setVisibleStops] = useState<DisplayStopsData>([]);
+    const [stops, setStops] = useState<DisplayStopsData>();
     useEffect(() => {
         const updateVisibleStops = () => {
             if (mapRef.current) {
@@ -116,7 +116,7 @@ const Map: React.FC = () => {
         // Call getVehicleLocations every 30 seconds if selectedRouteParam is not null
         const intervalId = setInterval(() => {
             if (selectedRouteParam) {
-                getVehicleLocations(selectedRouteParam.routeTag).then((vehicleLocations) => {
+                getVehicleLocations(selectedRouteParam.routeTag, selectedRouteParam.dirTag).then((vehicleLocations) => {
                     if (!vehicleLocations) {
                         return;
                     }
