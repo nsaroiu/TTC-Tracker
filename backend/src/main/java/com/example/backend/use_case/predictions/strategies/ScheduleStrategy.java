@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+// A Strategy used in the predictions use case that returns the predicted times of arrival, in minutes,
+// for vehicles in the specified direction, to the specified stop.
+// The strategy uses the scheduled arrival times of the stop to calculate predicted times.
 public class ScheduleStrategy implements Strategy {
 
+    // A helper method that calculates the time difference in minutes between two times in the format HH:MM:SS
     private float calculateTimeDifference(String time1, String time2) {
         String[] time1Split = time1.split(":");
         String[] time2Split = time2.split(":");

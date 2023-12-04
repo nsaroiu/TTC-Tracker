@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+// A Strategy used in the predictions use case that returns the predicted times of arrival, in minutes,
+// for vehicles in the specified direction, to the specified stop.
+// The strategy uses live vehicle locations and average speed of vehicles in the direction to calculate predicted times.
 public class CalculateDistanceStrategy implements Strategy {
-    private final int speedConstant = 1;
 
+    // A helper method that calculates the distance in km along the direction shape from obj1 to obj2.
+    // This assumes that there is only one direction of travel along the shape.
     private float distanceAlongShape(ArrayList<Location> shape, DistanceMeasurable obj1, DistanceMeasurable obj2) {
         int i = indexOfClosestPointOnShape(obj1, shape);
         int j = indexOfClosestPointOnShape(obj2, shape);
@@ -79,6 +83,7 @@ public class CalculateDistanceStrategy implements Strategy {
         return startDistance + middleDistance + endDistance;
     }
 
+    // A helper method that gets the index of the Location on the shape that is closest to the point.
     private int indexOfClosestPointOnShape(DistanceMeasurable point, ArrayList<Location> shape) {
         int index = 0;
         float minDistance = point.distanceTo(shape.get(0));
@@ -127,8 +132,8 @@ public class CalculateDistanceStrategy implements Strategy {
         ArrayList<Float> predictions = new ArrayList<>();
         for (float distance : distances) {
             if (i < 3) {
-                float prediction = (distance / speedConstant);
-                predictions.add(prediction / avgSpeed * 60);
+                float prediction = (distance / avgSpeed * 60);
+                predictions.add(prediction);
                 i += 1;
             }
             else {
