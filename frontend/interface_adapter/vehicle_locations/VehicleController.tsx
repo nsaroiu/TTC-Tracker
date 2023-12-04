@@ -3,9 +3,9 @@ import {VehicleData} from "./VehicleData";
 import LatLngLiteral = google.maps.LatLngLiteral;
 
 const VehicleController = () => {
-    const fetchData = async (routeTag: string): Promise<VehicleData | undefined> => {
+    const fetchData = async (routeTag: string, dirTag: string): Promise<VehicleData | undefined> => {
         try {
-            const response = await fetch(`http://localhost:8080/vehicle-locations?routeTag=${routeTag}`, {
+            const response = await fetch(`http://localhost:8080/vehicle-locations?routeTag=${routeTag}&dirTag=${dirTag}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,9 +23,9 @@ const VehicleController = () => {
         }
     }
 
-    const getVehicleLocations = useCallback(async (routeTag: string): Promise<Array<LatLngLiteral> | undefined> => {
+    const getVehicleLocations = useCallback(async (routeTag: string, dirTag: string): Promise<Array<LatLngLiteral> | undefined> => {
         try {
-            const vehicleData = await fetchData(routeTag);
+            const vehicleData = await fetchData(routeTag, dirTag);
             if (vehicleData === undefined) {
                 return undefined;
             }
