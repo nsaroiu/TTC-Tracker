@@ -2,7 +2,6 @@ package com.example.backend.data_access.route;
 
 import com.example.backend.entity.Route;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 public interface RouteDataAccessInterface {
@@ -19,13 +18,6 @@ public interface RouteDataAccessInterface {
      * @return HashSet of route tags that pass through the stop
      */
     HashSet<String> getRouteTagsByStopTag(String stopTag);
-
-    /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
-     *
-     * @return HashMap mapping stop tags to a set of route tags for TTC
-     * @see HashMap
-     */
-    HashMap<String, HashSet<String>> getStopTagsToRouteTags();
 
     /** Returns a Route object for the given route tag.
      *
