@@ -68,9 +68,6 @@ public class CalculateDistanceStrategy implements Strategy {
             throw new IndexOutOfBoundsException("failed because i=" + i + " and j=" + j);
         }
 
-        System.out.println("Stop coords is " + shape.get(j).getLatitude() + ", " + shape.get(j).getLongitude());
-        System.out.println("Vehicle coords is " + shape.get(i).getLatitude() + ", " + shape.get(i).getLongitude());
-
         float startDistance = obj1.distanceTo(shape.get(i));
         float endDistance = shape.get(j).distanceTo(obj2);
         float middleDistance = 0;
@@ -79,7 +76,6 @@ public class CalculateDistanceStrategy implements Strategy {
             i = (i + 1) % shape.size();
         }
 
-        System.out.println("Start: " + startDistance + "\nMiddle: " + middleDistance + "\nEnd: " + endDistance);
         return startDistance + middleDistance + endDistance;
     }
 
@@ -118,7 +114,6 @@ public class CalculateDistanceStrategy implements Strategy {
 
         ArrayList<Float> distances = new ArrayList<>();
         for (Vehicle vehicle : vehiclesInDirection) {
-            System.out.println("Vehicle is at " + vehicle.getLocation().getLatitude() + ", " + vehicle.getLocation().getLongitude());
             try {
                 float distance = distanceAlongShape(data.getShape(), vehicle, stop);
                 distances.add(distance);
@@ -141,7 +136,6 @@ public class CalculateDistanceStrategy implements Strategy {
             }
 
         }
-        System.out.println(predictions);
         return predictions;
     }
 
