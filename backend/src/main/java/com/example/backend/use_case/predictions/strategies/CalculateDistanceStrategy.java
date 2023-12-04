@@ -68,12 +68,13 @@ public class CalculateDistanceStrategy implements Strategy {
             throw new IndexOutOfBoundsException("failed because i=" + i + " and j=" + j);
         }
 
+        // so i <= j
         float startDistance = obj1.distanceTo(shape.get(i));
         float endDistance = shape.get(j).distanceTo(obj2);
         float middleDistance = 0;
         while (i != j) {
             middleDistance += shape.get(i).distanceTo(shape.get(i + 1));
-            i = (i + 1) % shape.size();
+            i = i + 1;
         }
 
         return startDistance + middleDistance + endDistance;
