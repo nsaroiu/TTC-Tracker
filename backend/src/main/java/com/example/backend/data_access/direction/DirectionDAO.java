@@ -12,6 +12,7 @@ import java.util.*;
 @Repository
 public class DirectionDAO implements DirectionDataAccessInterface {
     private final String directionsCsvFilename = "backend/src/main/java/com/example/backend/data/directions.csv";
+    private final String speedCsvFileName = "backend/src/main/java/com/example/backend/data/avgspeed.csv";
 
     /** Returns a map of all directions that run on a route, given its route tag
      *
@@ -75,5 +76,25 @@ public class DirectionDAO implements DirectionDataAccessInterface {
         }
 
         return shape;
+    }
+
+    public float getAverageSpeed(String dirTag, String hour) {
+        float speed = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(speedCsvFileName))) {
+            String line;
+            // Skip first row (headers)
+            reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                if (row[1].equals(dirTag) && row[0].equals(hour)) {
+                    speed = Float.parseFloat(row[2]);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return speed;
     }
 }

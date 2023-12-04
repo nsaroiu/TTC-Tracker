@@ -4,9 +4,11 @@ import com.example.backend.entity.Location;
 import com.example.backend.entity.Stop;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+@Repository
 public interface StopDataAccessInterface {
 
     /** Given a route tag, returns a set of stops on that route.
@@ -41,5 +43,13 @@ public interface StopDataAccessInterface {
      * @return ArrayList of HashMaps mapping stop tags to locations.
      */
     HashMap<String, Location> getAllStopTagsAndLocations();
+
+    /** Returns a list of scheduled arrival times of vehicles serving the specified direction at the specified stop.
+     *
+     * @param stopTag String representing the stop tag
+     * @param dirTag  String representing the direction tag
+     * @return ArrayList of Strings representing the scheduled arrival times
+     */
+    ArrayList<String> getScheduledArrivals(String stopTag, String dirTag);
 
 }
