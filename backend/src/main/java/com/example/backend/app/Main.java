@@ -2,7 +2,11 @@ package com.example.backend.app;
 
 import com.example.backend.data_access.InvalidRequestException;
 import com.example.backend.data_access.UmoiqApiCaller;
+import com.example.backend.data_access.direction.DirectionDAO;
+import com.example.backend.data_access.vehicle.VehicleDAO;
+import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.entity.Route;
+import com.example.backend.entity.RouteDirection;
 import com.opencsv.CSVWriter;
 import com.example.backend.data_access.route.RouteDAO;
 import com.example.backend.data_access.route.RouteDataAccessInterface;
@@ -19,12 +23,8 @@ import java.util.HashSet;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
-        RouteDataAccessInterface routeDAO = new RouteDAO();
-
-        Route route = routeDAO.getRouteByRouteTag("510");
-
-        System.out.println(route.getRouteTag());
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        System.out.println(vehicleDAO.getVehiclesByRouteTag("your mum is gay"));
         
     }
 
