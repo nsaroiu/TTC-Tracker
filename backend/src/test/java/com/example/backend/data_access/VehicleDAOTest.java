@@ -2,12 +2,17 @@ package com.example.backend.data_access;
 
 import com.example.backend.data_access.vehicle.VehicleDAO;
 import com.example.backend.entity.Vehicle;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -22,6 +27,8 @@ import static org.mockito.Mockito.*;
 
 public class VehicleDAOTest {
 
+    private static MockedStatic<UmoiqApiCaller> apiCallerMockedStatic;
+
     @InjectMocks
     private VehicleDAO vehicleDAO;
 
@@ -32,9 +39,9 @@ public class VehicleDAOTest {
     }
 
     @BeforeEach
-    void setUp() throws ParserConfigurationException, IOException, SAXException {
+    void setUp() throws ParserConfigurationException, IOException, SAXException, InvalidRequestException {
         MockitoAnnotations.openMocks(this);
-        MockedStatic<UmoiqApiCaller> mockedStatic = mockStatic(UmoiqApiCaller.class);
+        apiCallerMockedStatic = mockStatic(UmoiqApiCaller.class);
 
         // Mock UmoiqApiCaller.getRequest to return a sample XML document
         final String xmlString = "<body>" +
@@ -44,7 +51,15 @@ public class VehicleDAOTest {
                 "</body>";
         Document doc = stringToXMLDocument(xmlString);
         String[][] params = {{"command", "vehicleLocations"}, {"r", "510"}, {"t", "0"}};
-        mockedStatic.when(() -> UmoiqApiCaller.getRequest(eq(params))).thenReturn(doc);
+        apiCallerMockedStatic.when(() -> UmoiqApiCaller.getRequest(eq(params))).thenReturn(doc);
+
+        final String invalidXmlString = "<body>" +
+                "<lastTime time=\"1701666202700\"/>" +
+                "</body>";
+        Document invalidDoc = stringToXMLDocument(invalidXmlString);
+        String[][] invalidParams = {{"command", "vehicleLocations"}, {"r", "invalidRouteTag"}, {"t", "0"}};
+        apiCallerMockedStatic.when(() -> UmoiqApiCaller.getRequest(eq(invalidParams))).thenReturn(invalidDoc);
+
     }
 
     @Test
@@ -60,5 +75,22 @@ public class VehicleDAOTest {
         assert(result.size() == 2);
         assert(result.get(0).getId() == 4575);
         assert(result.get(1).getId() == 4439);
+    }
+
+    @Test
+    void execute_ReturnsEmptyArray_WhenRouteTagInvalid() {
+        // Arrange
+        String routeTag = "invalidRouteTag";
+
+        // Act
+        ArrayList<Vehicle> result = vehicleDAO.getVehiclesByRouteTag(routeTag);
+
+        // Assert
+        assert(result.isEmpty());
+    }
+
+    @AfterEach
+    void close() {
+        apiCallerMockedStatic.close();
     }
 }
