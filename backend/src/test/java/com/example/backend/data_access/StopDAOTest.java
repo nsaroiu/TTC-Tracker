@@ -50,13 +50,13 @@ public class StopDAOTest {
         allStops.add(new Stop("1642", "Bedford Rd At Davenport Rd", 0, 0, routeTags));
         HashSet<String> stopTags = new HashSet<>();
         stopTags.add("1642");
-        doReturn(stopTags).when(mockStopDAO).getStopsByRouteTag(any());
+        doReturn(stopTags).when(mockStopDAO).getStopTagsByRouteTag(any());
         doReturn(allStops).when(mockStopDAO).getAllStops();
 
         HashSet<Stop> stops = mockStopDAO.getStopsByRouteTag("19");
 
         assertEquals(1, stops.size());
-        assertEquals("1642", stops.iterator().next());
+        assertEquals("1642", stops.iterator().next().getTag());
     }
 
     @Test
