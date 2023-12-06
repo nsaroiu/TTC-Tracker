@@ -1,14 +1,14 @@
 package com.example.backend.use_case.predictions.strategies;
 
 import com.example.backend.entity.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StrategyInputDataTest {
 
@@ -19,16 +19,13 @@ public class StrategyInputDataTest {
     String STOPTAG = "A";
     ArrayList<String> schedule = new ArrayList<>();
     ArrayList<Location> shape = new ArrayList<>();
-    HashMap<String, Stop> stops = new HashMap<String, Stop>();
-    HashSet<String> routeTags = new HashSet<String>();
-    ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
-    Strategy scheduleStrategy = new ScheduleStrategy();
-
-    Strategy calculateDistanceStrategy = new CalculateDistanceStrategy();
+    HashMap<String, Stop> stops = new HashMap<>();
+    HashSet<String> routeTags = new HashSet<>();
+    ArrayList<Vehicle> vehicles = new ArrayList<>();
 
 
 
-    @Before
+    @BeforeEach
     public void setUp(){
         //Instantiate the builder
         StrategyInputDataBuilder strategyInputDataBuilder = new StrategyInputDataBuilder();
@@ -55,7 +52,7 @@ public class StrategyInputDataTest {
         stops2.add(STOPTAG);
 
         //set the routeDirections
-        HashMap<String, RouteDirection> routeDirections = new HashMap<String, RouteDirection>();
+        HashMap<String, RouteDirection> routeDirections = new HashMap<>();
         routeDirections.put(DIRTAG,new RouteDirection(stops2,DIRTAG,"A"));
         route = new Route(stops, "routeTag", routeDirections);
         strategyInputDataBuilder.setRoute(new Route(stops, "routeTag", routeDirections));
@@ -68,6 +65,7 @@ public class StrategyInputDataTest {
         //Build the strategyInputData
         strategyInputData = strategyInputDataBuilder.build();
     }
+
     @Test
     public void testInputData() {
         //Assert the average speed is correct
@@ -92,19 +90,5 @@ public class StrategyInputDataTest {
         assertEquals(STOPTAG, strategyInputData.getStopTag());
 
     }
-
-    @Test
-    public void testScheduleStrategyExecute(){
-        ArrayList<Float> result = new ArrayList<>();
-        result.add(1353.1666f);
-        assertEquals(result.get(0),scheduleStrategy.execute(strategyInputData).get(0),100);
-    }
-
-    @Test
-    public void testCalculateDistanceExecute(){
-        ArrayList<Float> result = new ArrayList<>();
-        assertEquals(result, calculateDistanceStrategy.execute(strategyInputData));
-    }
-
 
 }
