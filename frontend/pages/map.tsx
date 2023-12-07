@@ -119,17 +119,27 @@ const Map: React.FC = () => {
         }
     }, [selectedRouteParam]);
 
+    const updateVehicleLocations = useCallback(() => {
+        if (selectedRouteParam) {
+            getVehicleLocations(selectedRouteParam.routeTag, selectedRouteParam.dirTag).then((vehicleLocations) => {
+                if (!vehicleLocations) {
+                    return;
+                }
+                setVehicleLocations(vehicleLocations);
+            });
+        }
+        else {
+            setVehicleLocations(null)
+        }
+
+    }
+    , [getVehicleLocations, selectedRouteParam]);
+
     useEffect(() => {
         // Call getVehicleLocations every 30 seconds if selectedRouteParam is not null
+        updateVehicleLocations();
         const intervalId = setInterval(() => {
-            if (selectedRouteParam) {
-                getVehicleLocations(selectedRouteParam.routeTag, selectedRouteParam.dirTag).then((vehicleLocations) => {
-                    if (!vehicleLocations) {
-                        return;
-                    }
-                    setVehicleLocations(vehicleLocations);
-                });
-            }
+            updateVehicleLocations();
         }, 5000);
 
         // Cleanup the interval when the component is unmounted
@@ -148,6 +158,9 @@ const Map: React.FC = () => {
                 }
                 setPredictions(predictions);
             });
+        }
+        else {
+            setPredictions(null)
         }
     }, [getPredictions, selectedRouteParam, selectedStop]);
 
