@@ -1,6 +1,5 @@
 package com.example.backend.use_case.display_stops;
 
-import com.example.backend.data_access.stop.StopDataAccessInterface;
 import com.example.backend.entity.Stop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 class StopsImplementationTest {
 
     @Mock
-    private StopDataAccessInterface stopDataAccessObject;
+    private StopsDataAccessInterface stopsDataAccessObject;
 
     @InjectMocks
     private StopsImplementation stopsImplementation;
@@ -33,7 +32,7 @@ class StopsImplementationTest {
         mockedStops.add(new Stop("Tag1", "Stop1", 1.0f, 2.0f, new HashSet<>()));
         mockedStops.add(new Stop("Tag2", "Stop2", 3.0f, 4.0f, new HashSet<>()));
 
-        when(stopDataAccessObject.getAllStops()).thenReturn(mockedStops);
+        when(stopsDataAccessObject.getAllStops()).thenReturn(mockedStops);
 
         // Act
         StopsOutputData result = stopsImplementation.execute();
@@ -46,7 +45,7 @@ class StopsImplementationTest {
     @Test
     void execute_ReturnsEmptyStopsOutputData_WhenNoStopsExist() {
         // Arrange
-        when(stopDataAccessObject.getAllStops()).thenReturn(new HashSet<>());
+        when(stopsDataAccessObject.getAllStops()).thenReturn(new HashSet<>());
 
         // Act
         StopsOutputData result = stopsImplementation.execute();

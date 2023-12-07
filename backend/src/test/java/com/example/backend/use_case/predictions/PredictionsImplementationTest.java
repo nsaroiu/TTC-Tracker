@@ -1,8 +1,5 @@
 package com.example.backend.use_case.predictions;
 
-import com.example.backend.data_access.direction.DirectionDataAccessInterface;
-import com.example.backend.data_access.route.RouteDataAccessInterface;
-import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.use_case.predictions.strategies.Strategy;
 import com.example.backend.use_case.predictions.strategies.StrategyInputData;
 import org.junit.jupiter.api.AfterEach;
@@ -28,13 +25,7 @@ public class PredictionsImplementationTest {
     private static final LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 1, 8, 0, 0, 1);
 
     @Mock
-    private RouteDataAccessInterface routeDAO;
-
-    @Mock
-    private VehicleDataAccessInterface vehicleDAO;
-
-    @Mock
-    private DirectionDataAccessInterface directionDAO;
+    private PredictionsDataAccessInterface predictionsDAO;
 
     @Mock
     private Strategy strategy;
@@ -51,10 +42,10 @@ public class PredictionsImplementationTest {
         mockedLocalDateTime = mockStatic(LocalDateTime.class);
         mockedLocalDateTime.when(() -> LocalDateTime.now((ZoneId) any())).thenReturn(localDateTime);
 
-        when(routeDAO.getRouteByRouteTag("routeTag")).thenReturn(null);
-        when(vehicleDAO.getVehiclesByRouteTag("routeTag")).thenReturn(null);
-        when(directionDAO.getShapeByDirTag("dirTag")).thenReturn(null);
-        when(directionDAO.getAverageSpeed("dirTag", "8")).thenReturn(0.0f);
+        when(predictionsDAO.getRouteByRouteTag("routeTag")).thenReturn(null);
+        when(predictionsDAO.getVehiclesByRouteTag("routeTag")).thenReturn(null);
+        when(predictionsDAO.getShapeByDirTag("dirTag")).thenReturn(null);
+        when(predictionsDAO.getAverageSpeed("dirTag", "8")).thenReturn(0.0f);
         when(strategy.execute(any(StrategyInputData.class))).thenReturn(new ArrayList<>(List.of(0.5f, 1.0f, 1.5f)));
 
         doNothing().when(predictionsImplementation).setStrategy(any(Strategy.class));
