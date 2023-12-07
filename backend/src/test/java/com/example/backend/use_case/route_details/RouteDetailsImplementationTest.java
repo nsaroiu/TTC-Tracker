@@ -1,7 +1,5 @@
 package com.example.backend.use_case.route_details;
 
-import com.example.backend.data_access.direction.DirectionDataAccessInterface;
-import com.example.backend.data_access.route.RouteDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.example.backend.entity.RouteDirection;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +18,7 @@ import static org.mockito.Mockito.*;
 class RouteDetailsImplementationTest {
 
     @Mock
-    private RouteDataAccessInterface routeDAO;
-
-    @Mock
-    private DirectionDataAccessInterface directionDAO;
+    private RouteDetailsDataAccessInterface routeDetailsDAO;
 
     @InjectMocks
     private RouteDetailsImplementation routeDetailsImplementation;
@@ -46,19 +41,19 @@ class RouteDetailsImplementationTest {
         Route route = new Route(new HashMap<>(), routeTag, routeDirections);
 
         // Mock behavior of DAOs
-        when(routeDAO.getRouteByRouteTag(routeTag)).thenReturn(route);
-        when(directionDAO.getShapeByDirTag(dirTag)).thenReturn(new ArrayList<>());
+        when(routeDetailsDAO.getRouteByRouteTag(routeTag)).thenReturn(route);
+        when(routeDetailsDAO.getShapeByDirTag(dirTag)).thenReturn(new ArrayList<>());
 
         // Test execute method
         RouteDetailsOutputData outputData = routeDetailsImplementation.execute(routeTag, dirTag);
 
         // Verify behavior
-        verify(routeDAO, times(1)).getRouteByRouteTag(routeTag);
-        verify(directionDAO, times(1)).getShapeByDirTag(dirTag);
+        verify(routeDetailsDAO, times(1)).getRouteByRouteTag(routeTag);
+        verify(routeDetailsDAO, times(1)).getShapeByDirTag(dirTag);
 
         // Verify output data
         assertEquals(routeDirection.getName(), outputData.getDirName());
-        assertEquals(directionDAO.getShapeByDirTag(dirTag), outputData.getShape());
+        assertEquals(routeDetailsDAO.getShapeByDirTag(dirTag), outputData.getShape());
     }
 
     @Test
@@ -68,14 +63,14 @@ class RouteDetailsImplementationTest {
         String dirTag = "SampleDirection";
 
         // Mock behavior of DAOs
-        when(routeDAO.getRouteByRouteTag(routeTag)).thenReturn(null);
+        when(routeDetailsDAO.getRouteByRouteTag(routeTag)).thenReturn(null);
 
         // Test execute method with invalid route
         RouteDetailsOutputData outputData = routeDetailsImplementation.execute(routeTag, dirTag);
 
         // Verify behavior
-        verify(routeDAO, times(1)).getRouteByRouteTag(routeTag);
-        verify(directionDAO, never()).getShapeByDirTag(anyString());
+        verify(routeDetailsDAO, times(1)).getRouteByRouteTag(routeTag);
+        verify(routeDetailsDAO, never()).getShapeByDirTag(anyString());
 
         // Verify output data
         assertNull(outputData);
@@ -91,15 +86,15 @@ class RouteDetailsImplementationTest {
         Route route = new Route(new HashMap<>(), routeTag, new HashMap<>());
 
         // Mock behavior of DAOs
-        when(routeDAO.getRouteByRouteTag(routeTag)).thenReturn(route);
-        when(directionDAO.getShapeByDirTag(dirTag)).thenReturn(null);
+        when(routeDetailsDAO.getRouteByRouteTag(routeTag)).thenReturn(route);
+        when(routeDetailsDAO.getShapeByDirTag(dirTag)).thenReturn(null);
 
         // Test execute method with invalid direction
         RouteDetailsOutputData outputData = routeDetailsImplementation.execute(routeTag, dirTag);
 
         // Verify behavior
-        verify(routeDAO, times(1)).getRouteByRouteTag(routeTag);
-        verify(directionDAO, times(0)).getShapeByDirTag(dirTag);
+        verify(routeDetailsDAO, times(1)).getRouteByRouteTag(routeTag);
+        verify(routeDetailsDAO, times(0)).getShapeByDirTag(dirTag);
 
         // Verify output data
         assertNull(outputData);

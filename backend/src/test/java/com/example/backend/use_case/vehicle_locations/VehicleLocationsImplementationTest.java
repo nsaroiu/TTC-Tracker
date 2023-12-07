@@ -1,6 +1,5 @@
 package com.example.backend.use_case.vehicle_locations;
 
-import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.entity.Vehicle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 public class VehicleLocationsImplementationTest {
 
     @Mock
-    private VehicleDataAccessInterface vehicleDAO;
+    private VehicleLocationsDataAccessInterface vehicleLocationsDAO;
 
     @InjectMocks
     private VehicleLocationsImplementation vehicleLocationsImplementation;
@@ -31,8 +30,8 @@ public class VehicleLocationsImplementationTest {
 
         mockVehicles.add(mockVehicle);
 
-        when(vehicleDAO.getVehiclesByRouteTag("nonemptyVehicles")).thenReturn(mockVehicles);
-        when(vehicleDAO.getVehiclesByRouteTag("emptyVehicles")).thenReturn(new ArrayList<>());
+        when(vehicleLocationsDAO.getVehiclesByRouteTag("nonemptyVehicles")).thenReturn(mockVehicles);
+        when(vehicleLocationsDAO.getVehiclesByRouteTag("emptyVehicles")).thenReturn(new ArrayList<>());
     }
 
     @Test
@@ -67,7 +66,7 @@ public class VehicleLocationsImplementationTest {
         String routeTag = "emptyVehicles";
         String dirTag = "dirTag";
 
-        when(vehicleDAO.getVehiclesByRouteTag(anyString())).thenReturn(new ArrayList<>());
+        when(vehicleLocationsDAO.getVehiclesByRouteTag(anyString())).thenReturn(new ArrayList<>());
 
         // Act
         VehicleLocationsOutputData result = vehicleLocationsImplementation.execute(routeTag, dirTag);
@@ -82,7 +81,7 @@ public class VehicleLocationsImplementationTest {
         String routeTag = "wrongRouteTag";
         String dirTag = "dirTag";
 
-        when(vehicleDAO.getVehiclesByRouteTag(anyString())).thenReturn(new ArrayList<>());
+        when(vehicleLocationsDAO.getVehiclesByRouteTag(anyString())).thenReturn(new ArrayList<>());
 
         // Act
         VehicleLocationsOutputData result = vehicleLocationsImplementation.execute(routeTag, dirTag);
