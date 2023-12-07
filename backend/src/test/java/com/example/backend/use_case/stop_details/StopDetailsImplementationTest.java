@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class StopDetailsImplementationTest {
@@ -32,30 +31,40 @@ public class StopDetailsImplementationTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
-        // Mock data setup
-        String stopTag = "exampleStopTag";
-        HashSet<Stop> mockStops = new HashSet<>();
-        Stop mockStop = new Stop("exampleStopTag", "Example Stop", 0.0f, 0.0f, new HashSet<>());
-        mockStops.add(mockStop);
+            // Mock data setup
 
-        ArrayList<String> stopsList = new ArrayList<>();
-        stopsList.add("exampleStopTag");
+            HashSet<String> mockRouteTags = new HashSet<>();
+            mockRouteTags.add("routeTag");
 
-        RouteDirection mockDirection = new RouteDirection(stopsList, "dirTag", "Direction Name");
+            String stopTag = "exampleStopTag";
+            HashSet<Stop> mockStops = new HashSet<>();
+            Stop mockStop = new Stop("exampleStopTag", "Example Stop", 0.0f, 0.0f, mockRouteTags);
+            mockStops.add(mockStop);
 
-        HashMap<String, RouteDirection> mockDirections = new HashMap<>();
-        mockDirections.put("dirTag", mockDirection);
+            ArrayList<String> stopsList = new ArrayList<>();
+            stopsList.add("exampleStopTag");
 
-        HashMap<String, Stop> mockStopsMap = new HashMap<>();
-        mockStopsMap.put("exampleStopTag", mockStop);
+            RouteDirection mockDirection = new RouteDirection(stopsList, "dirTag", "Direction Name");
 
-        Route mockRoute = new Route(mockStopsMap, "routeTag", mockDirections);
+            HashMap<String, RouteDirection> mockDirections = new HashMap<>();
+            mockDirections.put("dirTag", mockDirection);
 
-        // Set up mock behavior for data access objects
-        when(stopDataAccessObject.getAllStops()).thenReturn(mockStops);
-        when(routeDataAccessObject.getRouteByRouteTag(anyString())).thenReturn(mockRoute);
+            HashMap<String, Stop> mockStopsMap = new HashMap<>();
+            mockStopsMap.put("exampleStopTag", mockStop);
+
+
+            String routeTag = "routeTag";
+            Route mockRoute = new Route(mockStopsMap, routeTag, mockDirections);
+
+            // Set up mock behavior for data access objects
+            when(stopDataAccessObject.getAllStops()).thenReturn(mockStops);
+            when(routeDataAccessObject.getRouteTagsByStopTag(stopTag)).thenReturn(mockRouteTags);
+            when(routeDataAccessObject.getRouteByRouteTag(routeTag)).thenReturn(mockRoute);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during test setup", e);
+        }
     }
 
     @Test
@@ -74,6 +83,5 @@ public class StopDetailsImplementationTest {
 
         // Verify the interaction
         assertEquals(expectedOutputData.getStopName(), result.getStopName());
-
     }
 }
