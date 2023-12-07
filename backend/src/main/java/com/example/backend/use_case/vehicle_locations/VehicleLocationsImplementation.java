@@ -1,6 +1,5 @@
 package com.example.backend.use_case.vehicle_locations;
 
-import com.example.backend.data_access.vehicle.VehicleDataAccessInterface;
 import com.example.backend.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +9,10 @@ import java.util.ArrayList;
 @Service
 public class VehicleLocationsImplementation implements VehicleLocationsService {
     @Autowired
-    VehicleDataAccessInterface vehicleDAO;
+    private VehicleLocationsDataAccessInterface vehicleLocationsDAO;
 
     public VehicleLocationsOutputData execute(String routeTag, String dirTag) {
-        ArrayList<Vehicle> routeVehicles = vehicleDAO.getVehiclesByRouteTag(routeTag);
+        ArrayList<Vehicle> routeVehicles = vehicleLocationsDAO.getVehiclesByRouteTag(routeTag);
         ArrayList<Vehicle> dirVehicles = new ArrayList<>();
 
         for (Vehicle vehicle : routeVehicles) {
