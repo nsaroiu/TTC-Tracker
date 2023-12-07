@@ -86,40 +86,6 @@ public class RouteDAO implements RouteDataAccessInterface {
         return null;
     }
 
-    /** Returns a HashMap mapping stop tags to a set of all routes that pass through the given stop.
-     *
-     * @return HashMap mapping stop tags to a set of route tags for TTC
-     * @see HashMap
-     */
-    public HashMap<String, HashSet<String>> getStopTagsToRouteTags() {
-
-        // Initialize CSV reader for Stop data
-        FileReader filereader = null;
-        try {
-            filereader = new FileReader(stopCsvFilename);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert filereader != null; // If this fails, the filename needs to be fixed
-        CSVReader csvReader = new CSVReader(filereader);
-
-        // Initialize HashMap to store stop tags and route tags
-        HashMap<String, HashSet<String>> stopTagsToRouteTags = new HashMap<>();
-
-        try {
-            String[] nextRecord = csvReader.readNext();
-
-            while ((nextRecord = csvReader.readNext()) != null) {
-                HashSet<String> routeTags = new HashSet<>(Arrays.asList(nextRecord[4].split(",")));
-                stopTagsToRouteTags.put(nextRecord[0], routeTags);
-            }
-        } catch (IOException | CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-
-        return stopTagsToRouteTags;
-    }
-
     /** Returns a Route object for the given route tag.
      *
      * @return Route object for the given route tag

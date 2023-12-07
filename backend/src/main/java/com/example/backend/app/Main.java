@@ -2,7 +2,6 @@ package com.example.backend.app;
 
 import com.example.backend.data_access.InvalidRequestException;
 import com.example.backend.data_access.UmoiqApiCaller;
-import com.example.backend.entity.Route;
 import com.opencsv.CSVWriter;
 import com.example.backend.data_access.route.RouteDAO;
 import com.example.backend.data_access.route.RouteDataAccessInterface;
@@ -19,12 +18,7 @@ import java.util.HashSet;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
-        RouteDataAccessInterface routeDAO = new RouteDAO();
-
-        Route route = routeDAO.getRouteByRouteTag("510");
-
-        System.out.println(route.getRouteTag());
+        System.out.println("I am madly in love with Dr. Jonathan Calver");
         
     }
 
