@@ -1,7 +1,5 @@
 package com.example.backend.use_case.stop_details;
 
-import com.example.backend.data_access.route.RouteDataAccessInterface;
-import com.example.backend.data_access.stop.StopDataAccessInterface;
 import com.example.backend.entity.Route;
 import com.example.backend.entity.RouteDirection;
 import com.example.backend.entity.Stop;
@@ -21,10 +19,7 @@ import static org.mockito.Mockito.when;
 public class StopDetailsImplementationTest {
 
     @Mock
-    private RouteDataAccessInterface routeDataAccessObject;
-
-    @Mock
-    private StopDataAccessInterface stopDataAccessObject;
+    private StopDetailsDataAccessInterface stopDetailsDAO;
 
     @InjectMocks
     private StopDetailsImplementation stopDetailsImplementation;
@@ -59,9 +54,9 @@ public class StopDetailsImplementationTest {
             Route mockRoute = new Route(mockStopsMap, routeTag, mockDirections);
 
             // Set up mock behavior for data access objects
-            when(stopDataAccessObject.getAllStops()).thenReturn(mockStops);
-            when(routeDataAccessObject.getRouteTagsByStopTag(stopTag)).thenReturn(mockRouteTags);
-            when(routeDataAccessObject.getRouteByRouteTag(routeTag)).thenReturn(mockRoute);
+            when(stopDetailsDAO.getAllStops()).thenReturn(mockStops);
+            when(stopDetailsDAO.getRouteTagsByStopTag(stopTag)).thenReturn(mockRouteTags);
+            when(stopDetailsDAO.getRouteByRouteTag(routeTag)).thenReturn(mockRoute);
         } catch (Exception e) {
             throw new RuntimeException("Error during test setup", e);
         }
